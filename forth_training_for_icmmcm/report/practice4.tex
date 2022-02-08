@@ -1,0 +1,359 @@
+\documentclass[UTF-8]{article}
+\usepackage{lipsum}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{amsthm,amsmath,amssymb}
+\usepackage{mathrsfs}
+\usepackage{geometry}
+\usepackage{longtable}
+\usepackage{cite}
+\usepackage{makecell}
+\usepackage{diagbox}
+\title{Storing the Sun:a Model for Off-grid Power System Design}
+\author{Yang Wu, Yanzhi Fan, Ziheng Peng}
+\geometry{a4paper,scale=0.8}
+\begin{document}
+ 
+ 
+
+    \Large
+    \maketitle
+    \begin{abstract}
+       \Large An energy storage system allows you to capture electricity, store it as another form of energy (battery, thermal, mechanical), 
+       and then have it available to use when needed. The purpose of these storage units is to store energy produced during sunny daylight hours for use when the solar 
+       panels do not produce enough energy for the demand (night or cloud-covered), or for storage and transfer of excess energy. Of the solar-powered homes that use an energy storage system,
+        most use some sort of battery. Some homeowners have only one large battery, while others may use a “bank of batteries” (two or more batteries connected). Energy storage can be expensive
+         and so homeowners should choose a system that is appropriate for their situation \par
+         Our model is aimed to find the best solution for such a system, we use the method of Linear Programming to find the best solution that
+          cost the least while having enough capacity and power to support all the appliance at home.\par
+        Therefor, we should find the requirements for the house. The first requirement that we need to know 
+        is the capacity needed for the appliance to run long enough, to do so, we find some data form the
+        EIA's RECS report in 2015 To 
+        know how many electrical appliances are there in a family of three people, then we divide the energy need by 
+        3 and times it with the population in a 1600 feet home, which attained by dividing the area with the 
+        Per capita housing size in the United States. With the same method that we find the requirement 
+        of maximum power.\par 
+        And then we looked at two different scenarios, the first is to use replaceable  batteries only,
+        they will have no such thing as Instantaneous Power Rating, which makes the system more vulnerable
+        to any sudden increasement  of the power that is usually caused by so high power appliances like 
+        the hairdryer. So it must have a higher power, the requirement for power became $\sum_{i=1}^2PiXi\geq M+K$, which is later proved very unhelpful in cutting the budget\par
+        The second scenario is that we use a mixture of replaceable batteries and lithium Batteries, which 
+        turned the requirement for maximum power to be $\sum_{i=3}^5I_iX_i\geq M+K$. In fact, we found that the lithium Batteries are so superior that we should actually use them only.\par
+        After finding the best solution for this home, we generalized the model to make it now capable of finding the solution for different homes with different area and with different optional batteries.
+        We still looked at two different scenarios, and we take the area as a variable, so does the number of types of the two kinds of batteries so that we can discuss them separately.\par
+        The following work is about a different kind of battery: the cement battery, we discussed the proper way to add it into our model and made a list of the information that we need to do so.
+        \newline \begin{center}
+            \textbf{keywords:}\Large Linear Programming, Energy Storage System, Lithium Batteries Cement battery, Replaceable Batteries, Instantaneous Power Rating.
+
+        \end{center}
+    \end{abstract}
+    \newpage
+    \tableofcontents   % 若不想要目录, 注释掉该句
+    \newpage
+ 
+
+
+ \section{Introduction}
+ \subsection{Background}
+ Music has been part of human societies since the beginning of time as an essential component of
+ cultural heritage. As part of an effort to understand the role music has played in the collective
+ human experience, we have been asked to develop a method to quantify musical evolution. There
+ are many factors that can influence artists when they create a new piece of music, including their
+ innate ingenuity, current social or political events, access to new instruments or tools, or other
+ personal experiences. Our goal is to understand and measure the influence of previously
+ produced music on new music and musical artists.\par
+ Some artists can list a dozen or more other artists who they say influenced their own musical
+ work. It has also been suggested that influence can be measured by the degree of similarity
+ between song characteristics, such as structure, rhythm, or lyrics. There are sometimes
+ revolutionary shifts in music, offering new sounds or tempos, such as when a new genre
+ emerges, or there is a reinvention of an existing genre (e.g. classical, pop/rock, jazz, etc.). This
+ can be due to a sequence of small changes, a cooperative effort of artists, a series of influential
+ artists, or a shift within society.\par
+ Many songs have similar sounds, and many artists have contributed to major shifts in a musical
+ genre. Sometimes these shifts are due to one artist influencing another. Sometimes it is a change
+ that emerges in response to external events (such as major world events or technological
+ advances). By considering networks of songs and their musical characteristics, we can begin to
+ capture the influence that musical artists have on each other. And, perhaps, we can also gain a
+ better understanding of how music evolves through societies over time.\par
+ Our team has been identified by the Integrative Collective Music (ICM) Society to develop a
+ model that measures musical influence. This problem asks us to examine evolutionary and
+ revolutionary trends of artists and genres.
+   \subsection{Restatement of the Problem}
+   \subsubsection{Requirement 1} 
+    \begin{enumerate}
+        \item The first part of this question asked us to first draw a  directed network
+        of musical influence, where influencers are connected to followers
+        \item Next we need a way to find the parameter that can be used to measure the "musical influence" in the network, which means we need a way to measure the 
+        importance of certain musician, we also need to draw a certain part from the network to from a subnetwork to show our method.
+    \end{enumerate}
+     
+    \subsubsection{Requirement 2}
+    We are now required to identify the parameters that we need to\
+    use to measure "similarity" in music
+   characteristics and the proper way to combine them with different scalars. Then with the method, 
+   and the data in the 3 files "full\_music\_data"
+    "data\_by\_artist", "data\_by\_year",
+     we were able to find out whether  artists
+     within genre  are more similar  than artists between genres\par
+    \subsubsection{Requirement 3}
+     It might not be so wise to try to analyze the influence and the development of music directly or only from the data for different musicians, we need a way to simplify our question.
+     We think it's' the best to categorize the musicians, it can not only help us simplify our work, but also  improves the generality of our method.
+     When we listen to some music, it seems that we can always classify them into a certain genre, yet there are always controversy, so first, we need a better way to identify the genres, thus we can analyze
+     the similarity and relationship between different genres. 
+    \subsubsection{Requirement 4}
+     Now that we had finished the construction of the directed network
+     of musical influence, we should now use similarity to indicate whether the similarity data can support
+     that the identified influencers in fact influence the respective
+     artists as reported in the data\_influence data set
+    \subsection{Requirement 5}
+    In the history of genres, there are always changes and development, sometime the change can happen in a sudden, some characteristics will change in a short period, 
+    we will analyze the changes
+    of different characteristics to see if there are some that happened in a sudden. And those songs don't' write themselves,
+     there have to be artists represent revolutionaries, we will analyze them, we will find those who has great influence in a revolution.
+    \subsubsection{Requireemt 6}
+    However, as Roman was not built in one day, the changes of a genre is not always abrupt, it is more often than not that changes will not change basic characteristics of 
+    a genre, we will find the history of a music genre, and those who are behind them, namely, those "dynamic influencers", we will develop a new parameter
+     that reveal the dynamic influencers.
+    \subsubsection{Requirement 7}
+    Although there are not enough information for us to show exactly how, there are always influence of the society on the genres, we can simplify all the complicated features
+    of a society, analyze these influences with time, in different period of time, there are different genres to show various emotions and attitude.
+
+    \section{Assumptions and Justification}
+
+     To simplify the problem and make it convenient for us to simulate real-life conditions, we make the following basic assumptions, each of which is properly justified.
+ 
+ \begin{itemize}
+  \item {\bf Conflicts exist between two appliances, when one appliance is functioning the other is very unlikely to be activated.}
+  \item {\bf The family living in the house is wealthy enough to afford normal everyday appliances.}
+ 
+  \item {\bf The change of the power of a battery, if happens,  happens suddenly.}
+
+  \item {\bf The family has no special demand for the system like reducing occupied area or maximizing the power.}
+
+ \end{itemize}
+ \section{Notations}
+ 
+ \begin{center}
+ \begin{tabular}{clc}
+ {\bf Symbols} & {\bf Description} & \quad {\bf Unit} \\[0.25cm]
+ $A$ & Area of the home & \quad $ft^2$
+ \\[0.2cm]
+ $E$ & Total daily electricity consumption & \quad kW$\cdot$h \\[0.2cm]
+ $e$ & Total daily electricity consumption of a family of three& \quad kW$\cdot$h \\[0.2cm]
+ $K$ & Population & \quad 1 \\[0.2cm]
+ $M$ & Peak power & \quad W \\[0.2cm]
+ $m$ & Peak power of a family of three& \quad W \\[0.2cm]
+ $X_i$ & Amount of the battery & \quad 1 \\[0.2cm]
+ $d_i$ & Cost of a battery & \quad $\$$ \\[0.2cm]
+ $P_i$ & Power of the battery & \quad $W$ \\[0.2cm]
+ $C_i$ & The capacity of a battery & \quad  kW$\cdot$h\\[0.2cm]
+ $\eta _i$ & Energy Exchange Efficiency & \quad 1 \\[0.2cm]
+ $n$ & number of  types of replaceable batteries & \quad 1 \\[0.2cm]
+ $m$ & number of types of lithium batteries & \quad 1  \\[0.2cm]
+ $I_i,t_i$& Instantaneous Power Rating and its time of duration &\quad $kW,s$ \\[0.2cm]
+ $ r_i $ &Time duration for stable power(before the power drop) &\quad $h$ \\[0.2cm]
+ $l_i$ & battery life & \quad  $d$ \\[0.2cm]
+ $K$ & Extra power pressure that hairdryer may bring & \quad $W$\\[0.2cm]
+ $Y$ & life of the system & \quad  years \\[0.2cm]
+\end{tabular}
+\end{center}
+We mark the different battery types with an integer. And $i$ here represent different batteries.
+ 
+ \section{Requirement 1}
+    \subsection{a. Analysis of Requirements}
+    Build a directed graph where each musician represents an edge per row in the influence\_data. The node contains THE ID, musician's name, the genre he belongs to and the year 
+    he started his activity, and followers represent the node to which this node points. 
+    If you need a new node, you can fill in the related information given in this line about the follower.
+    Next we need a way to show the influence of the artists. Naturally, we think the number of followers that an influencer influenced is a perfect index, as in academic community
+    the impact factor of a certain work is about how many times it was cited, the more people who accept his views, the more influence he will have. But it will be sticky 
+    if the graph is not an acyclic graph(which means there exist circle(s) in the graph), though it is  logically not possible, we still need to make sure that 
+   the graph is acyclic graph to preform the next step\\
+    Then, influence information is added to each node, and its value is the number of points it pointed to.
+    
+    \normalsize
+    \begin{center}
+        \begin{tabular}{|c | c |c | c |c  |c|}
+            \hline
+            \bf Appliances& \makecell {\bf Holding of a \\ \bf three-people-family in average} & \makecell{\bf Average daily\\ \bf usage time($h/d$)}  & \bf Time period of use 
+            & \bf Power($kW$) \\ \hline
+            Washing Machine & 0.85 & 1 & \makecell{conflict with \\the clothes dryer} & 0.4 \\ \hline
+            Television & 2.58 & \makecell{1.06(workdays)\\3.20(weekend)} & No conflict & 0.1 \\ \hline
+            Clothes Dryer & 0.76 & 1 & \makecell{conflict with \\the Washing Machine}& 0.75 \\ \hline
+            Dishwasher & 0.68 & 1 & \makecell{conflict with \\ the microwave}& 0.8\\ \hline
+            Microwave & 1.05 & 0.25 & \makecell{conflict with \\ the dishwasher } & 0.75 \\\hline
+            Fridge & 1.02 & 24 & No conflict & 0-0.2 \\ \hline 
+            Cooling System & 0.87 & 24 in summer & No conflict & 1.6 \\ \hline 
+            Heating System & 0.32 & 24 in winter & No conflict &4.6 \\ \hline
+         hairdryers & 3.00 & 0.03 & No conflict & 0.3 \\ \hline 
+            Vacuum Cleaner & 0.78 & 0.5 & No conflict & 1.4 \\ \hline
+            Computer & 1.77 &5.4 & No conflict & 0.3 \\\hline 
+            Lighting System & 8.12 & 4 & No conflict & 0.04 \\ \hline
+        \end{tabular}
+    \end{center}
+    
+    \large
+    However, there are more to discuss than what's shown in the tabular data. 
+    \begin{enumerate}
+        \item When we need to calculate the peak total power, we only add the highest power of a group of pair appliances that conflicts with each other.
+        \item We will not take the consumption of hairdryers into account, however, it is important to consider the power pressure it brings.
+        \item 3.	We take the coverage of the cooling and heating systems into account for it has variable power. The power of a VRV is sure to change with the area it covers.
+        The data of power means the average power that a room requires, and we will time the coverage with it to come up with the power of the entire system.
+        \item The data of holding means the number of illumination lamps and lanterns when it comes to the Lighting System, and we use the average power of the lamps and bulbs to calculate
+        the daily power consumption.
+        \item With the tabular data we are now able to calculate the daily power consumption in a common family by accumulating the product of holding usage time and power of each of the 
+        appliances. And the peak power is acquired by summing the power of all the appliances that are not in conflict.
+        \item For the power of the cooling and heating system are different, we will discuss the consumption separately in summer and winter. But eventually, we will only take the larger
+        one into consideration.
+    \end{enumerate}
+    And according to our calculation, the daily consumption is 41.02-41.22$kW$ in summer and 43.32-43.52$kW$ in winter, and the peak power is 6.55$kW$ in summer and 9.55$kW$ in winter.
+    \newline
+    \newline
+    Then with the data from a survey conducted by the Beijing University, the Per Capita Living Space is 67$m^2$, which is about 721.2$ft^2$. So we get the population of the 1600-feet home
+    by $$K=\frac{A}{721.2}$$ and thus we have the total power consumption and the peak power by $$E=\frac{e}{3}K$$ and $$M=\frac{m}{3}K$$. In the end, the calculation shows that the 1600-feet home has a Total daily electricity consumption
+    of $31.92kW\cdot h$ and a maximum power requirement of $9.55W$
+    
+    \subsection{b. Model Development}
+    The best solution is the solution that costs the least while being able to power up the place. To evaluate the cost, we need an objective function $\varphi (x)$, then we do the Linear Programming
+    to find the amount of different batteries that we will use in the system to make it the cheapest with certain restrictions. In general, we need the  capacity of the system to be enough for
+    at least a day, we also need the system to have enough power to work normally even in peak hours.
+    And there are three ways to build such a system.
+    \subsubsection{Plan 1: all batteries are replaceable batteries}
+    In this plan, the power of the batteries will change after a period, which can be a potential risk of the system, so we change the batteries continuously and periodically to make
+    the power of the system to be stable, and the new stable power is what we will only care ever since. We will change $\frac{l_i}{r_i}$ of the batteries, so the new power $P_i$ is  defined
+    as:$$P_i=P_i1+[\frac{l_i}{r_i}]P_i2$$
+    The restrictions are:
+    $$\sum_{i=1}^2CiXi\geq E$$
+    $$\sum_{i=1}^2PiXi\geq M+K$$
+    The objective function is:
+    $$\varphi (x)=365 \cdot 0.15 \cdot Y \cdot E \cdot \frac{3}{17} +365\times 24\cdot Y \cdot \sum_{i=1} ^2\frac{d_iX_i}{r_i}$$ 
+    The function represented the cost to generate the electricity of the electricity needed in the years and the cost of the construction of the system in the beginning, 0.15 is the cost of a 1 $kW\cdot h$ of electricity, 
+    according to the data for RECS. We need to find a way to evaluate the efficiency of the system, so we time the consumption of the system with a coefficient $\frac{3}{17}=\frac{1}{\eta }-1$.
+    \subsubsection{Plan 2:with a mixture of different kinds of battery}
+    In this solution, we will discuss two kinds of batteries, for the replaceable batteries, we can still use the method we discussed in the last plan as long as we make sure they stand
+    in groups. As for the lithium batteries, we can simply use the power and capacity data without any special management. We will also use Linear Programming to find the best distribution of 
+    the batteries
+    What's' special about this plan is that the lithium batteries is that they can provide a short burst of energy with a much higher power, which is helpful to our system, for we don't' need some extra batteries 
+    to provide a higher maximum power to make the system more stable.
+    Thus, the restrictions are:
+    $$\sum_{i=1}^3(1+[\frac{l-i}{r_i}]) \cdot C_i \cdot X_i + \sum_{i=3}C_iX_i\geq E$$
+    $$\sum_{i=1}^5P_iX_i\geq M$$
+    $$\sum_{i=3}^5I_iX_i\geq M+K$$
+    $$\sum_{i=n+1}^5 t_iX_i\geq 120$$
+    The objective function, to evaluate the same thing with plan 1, $\varphi (x)$ will be:
+    $$\varphi (x) = 365 \times 0.15 \cdot Y \cdot E \cdot (\frac{\sum^2_{i=1}[\frac{l_i}{x_i}]C_iX_i+\sum_{i=3}^5C_iX_i}{\sum^2_{i=1}[\frac{l_i}{r_i}]C_iX_i\eta _i+\sum_{i=3}^5C_iX_i\eta _1})-1)
+    + \sum_{i=3} ^5d_iX_i+\frac{365 \times 24}{\eta } \cdot Y \cdot \sum_{i=1} ^2d_iX_i $$
+    \subsection{c.Best Option}
+    Our calculation indicated that plan 2 is way better, in fact, it is the best we use lithium batteries only.
+    \newline
+    \begin{center}
+        \begin{tabular}{|c |c|c| c |c |c|c|}\hline
+            \diagbox {\bf Plans}{\bf Batteries} & \bf 1 &\bf 2&\bf 3&\bf 4&\bf 5& total cost(\$) \\ \hline
+            
+            Plan 1& 77&0 & not considered    & not considered  & not considered&49,645,905.6141\\\hline
+            Plan 2 & 0&0&0&2&1 &35,027.3716\\\hline
+    
+        \end{tabular}
+    \end{center}
+     Our model has the following advantages:
+    \begin{enumerate}
+        \item The conversion efficiency and battery cost are considered together.
+        \item High power electrical appliances such as hairdryers are considered, so the stability is high.
+        \item The model automatically selects whether to use lithium batteries only.
+        \item Constant replenishment of replaceable batteries keeps its power stable.
+        \item The model can be applied to any type of battery of the same battery type.
+    \end{enumerate}
+    However, there are also some disadvantages:
+    \begin{enumerate}
+        \item No account is taken of battery size and weight.
+        \item No account is taken of different types of lithium battery life.
+        \item No account is taken of the change in the number of replaceable batteries caused by different seasons
+    \end{enumerate}
+    \section{Requirement 2}
+    We need a function $Sim(musci a, music b)$which return the similarity of the two subjects, which we will measure with the Pearson Correlation Coefficient.We will use the function to 
+    measure the similarity of both musicians and their songs. Thus we can measure the similarity between and within the genres by comparing the mean value of the similarity.
+
+
+
+
+    In this part, we are required to adjust and generalize your model from Requirement 1. 
+    In requirement 1, we discussed specific home with an area of 1600$ft^2$ now we have to generalize our  model to make it be able to deal with homes with different area, marked as $A$. And we can still use the same equation To
+    calculate out the value of $E$ and $M$, which are:$$K=\frac{A}{721.2}$$ $$E=\frac{e}{3}K$$  $$M=\frac{m}{3}K$$
+    Next, in the former model, we only considered a few certain kinds of batteries, in the generalized model, we need to be able to deal with unknown kinds of batteries. Thus, we should first use $n$ and $m$ to represent the 
+    number if types of replaceable batteries and lithium batteries, so we can discuss them separately.\par
+    If there are only replaceable batteries, we should still use the method discussed in plan 1，in a generalized version, where the restrictions should be:
+    $$\sum_{i=1}^nCiXi\geq E$$
+    $$\sum_{i=1}^nPiXi\geq M+K$$
+    The objective function is:
+    $$\varphi (x)=365 \cdot 0.15 \cdot Y \cdot E \cdot (\frac{1}{\eta }-1) +365\times 24\cdot Y \cdot \sum_{i=1} ^n\frac{d_iX_i}{r_i}$$ 
+    Once lithium batteries are provided, the model should be in plan 2, where the restrictions are:
+    $$\sum_{i=1}^{n+m}(1+[\frac{l-i}{r_i}]) \cdot C_i \cdot X_i + \sum_{i=n+1}C_iX_i\geq E$$
+      $$\sum_{i=1}^{n+m}P_iX_i\geq M$$
+    $$\sum_{i=n+1}^{n+m}I_iX_i\geq M+K$$
+    $$\sum_{i=n+1}^{n+m} t_iX_i\geq 120$$
+    The objective function $\varphi (x)$, to evaluate the same thing with plan 1,  will be:
+    $$\varphi (x) = 365 \times 0.15 \cdot Y \cdot E \cdot (\frac{\sum^n_{i=1}[\frac{l_i}{x_i}]C_iX_i+\sum_{i=n+1}^{n+m}C_iX_i}{\sum^n_{i=1}[\frac{l_i}{r_i}]C_iX_i\eta _i+\sum_{i=n+1}^{n+m}C_iX_i\eta _1})-1)
+    + \sum_{i=n+1} ^{n+m}d_iX_i+\frac{365 \times 24}{\eta } \cdot Y \cdot \sum_{i=1} ^{n}d_iX_i $$
+    \section{Requirement 3}
+    The cement batteries sounded very attractive and charming, for people can easily see the benefit of such an invention, yet every new technology needs to be carefully discussed  before it can be extensively used. In the article,
+    we will discuss it based on our study of a power system.
+    \subsection{a.the Advantages and the Disadvantages}
+    Advantages:
+    \begin{enumerate}
+        \item The cement batteries certainly have a lot of advantages, the most valuable one is that it does not take on any living space or extra space, the wall, the floor and the ceiling can all be batteries if we can make cement batteries,
+        thus it can be really helpful in saving space.
+        \item Due to the large volumes of structures, the capacity of energy storage can be high, even if the energy per unit volume is not high. This means the technology now is enough for the batteries to be used to replace some batteries in our plan, if the energy per unit volume can be high enough in the future, we might not need any extra place to install the power system.
+        \item The cement batteries are rechargeable, which is very important for this technology to be put into use. The cement batteries are very unlikely to be replaced when their power runs out, if it can not be charged, with such a low capacity per volume, the batteries will soon become useless.
+    \end{enumerate}
+    Disadvantages:
+    \begin{enumerate}
+        \item The energy density was markedly lower than the commercial batteries, which means it can not fully replace commercial batteries in most places, and when the area of the house goes up, so does the demand for the capacity of batteries, so it might be a dead-end to try to increase the capacity by build rechargeable cement-based batteries on a
+        large scale, with regard to the huge volume of a building.
+        \item The construction of the cement batteries was, in fact, quite complicated and expensive, for the cement batteries need a lot of electrodes and other electronic components to function.
+        
+        \item These batteries are very difficult to maintain and replace, any maintenance will be like a renovation.
+    \end{enumerate}
+    \subsection{Discussion of a new model}
+    The cement battery is different from the batteries that we discussed in the early sections, yet it can still be included in our model, we just need  some more information and a new way to discuss it.
+    The cement battery should first be marked as the No.(n+m+1) battery in the system, and due to the uniqueness of the battery,$X_{n+m+1}$ should be defined as the volume of the cement battery, and we will Replace the building cement with the cement battery, and 
+    put the cement battery into the model for planning according to the parameters of the cement battery, and get the volume of the cement battery. However, due to the consideration of 
+    floor area, the impact of cement battery cost in the objective function can be adjusted according to the actual situation such as customer requirements, so as to fully consider the advantages of 
+    cement battery that can save the floor area of the system. We might be about to time a proper coefficient to the cost of the cement battery to achieve such purpose. Yet we still need to know a few more parameters of the cement battery, our model requires the power and capacity is enough, while trying to cut the budget,so for every volume of a certain cement battery, we need to know the cost, capacity, and power of it,
+    just like the batteries we discussed in our present model.
+    \newpage \section{Requirement4}\Large
+     In this part, we will traverse every edge and calculate the to find whether the similarity for between the influencer and the followers, thus we will be able to identify whether the influence is valid.
+     Then, we will find the parameters with the most similarity in every edge, those music characteristics that appears the most will be considered more
+     'contagious' than others.
+
+
+
+
+
+     There is a lot of talk about going off-grid now. With energy prices rising, 
+    energy independence an increasingly hot topic, fear over using fossil fuels to generate power
+     and the increasing chances of power failure on a national level, it's no wonder people want to go off-grid!
+    Off-grid solar systems are complete packages for large scale projects. Homes 
+    that want to generate the majority of their energy through solar power or holiday
+     properties that want to minimize running costs.\par
+    An energy storage system allows you to capture electricity, store it as another
+   form of energy (battery, thermal, mechanical) and then have it available to use
+   when needed. The purpose of these storage units is to store energy produced during
+   sunny daylight hours for use when the solar panels do not produce enough energy
+  for the demand (night or cloud covered), or for storage and transfer of excess energy.
+  Of the solar-powered homes that use an energy storage system, most use some sort
+  of battery. Some homeowners have only one large battery, while others may use
+  a “bank of batteries” (two or more batteries connected). Energy storage can be
+  expensive and so homeowners should choose a system that is appropriate for their
+  situation.\par
+  Therefore a new model was developed, with is aimed to find the best solution of such a system, we use the method of Linear Programming to find the best solution that cost the least while having enough capacity and 
+  power to support all the appliance at home. With the solution provided by the model, we are able to find the cheapest way to build an off-grid 
+  solar power system that is fully capable of powering your home, no matter what size they are and what batteries you are going to use, there is always a way to find the best solution for you.\par
+        In the future, we will take a new type of battery into consideration--the cement battery. Imagine an entire twenty storey concrete building which can store energy like a giant battery. 
+        Thanks to unique research from Chalmers University of Technology, Sweden, such a vision 
+        could someday be a reality. Researchers from the Department of Architecture and 
+        Civil Engineering recently published an article outlining a new concept for rechargeable
+         batteries-- made of cement \par The ever-growing need for sustainable building materials poses great challenges for researchers. Doctor Emma Zhang, formerly of Chalmers University of Technology, Sweden, joined Professor Luping Tang’s research group several years ago to search for the building materials of the future. Together they have now succeeded in developing a world-first concept for a rechargeable cement-based battery. \par 
+         Sadly after careful reading of the research, we tend to see the cement battery as  a way to save space by replacing a certain part of the traditional commercial batteries rather than a complete alternative solution, due to its low energy density of the battery. Still, we are looking forward to the future technology, once its energy density can be promoted, it may rule the market of batteries for off-grid power system.
+
+    \bibliography{minterm}
+\end{document}
