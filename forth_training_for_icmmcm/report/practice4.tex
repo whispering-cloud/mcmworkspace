@@ -15,8 +15,6 @@
 \geometry{a4paper,scale=0.8}
 \begin{document}
 
-
-
 \Large
 \maketitle
 \begin{abstract}
@@ -105,7 +103,8 @@ the similarity and relationship between different genres.
 Now that we had finished the construction of the directed network
 of musical influence, we should now use similarity to indicate whether the similarity data can support
 that the identified influencers in fact influence the respective
-artists as reported in the data\_influence data set
+artists as reported in the data\_influence data set. And if there are some characteristics that tend to be high between a pair of influencer and follower, we will be
+considered more "contagious".
 \subsection{Requirement 5}
 In the history of genres, there are always changes and development, sometime the change can happen in a sudden, some characteristics will change in a short period,
 we will analyze the changes
@@ -116,9 +115,17 @@ However, as Roman was not built in one day, the changes of a genre is not always
 a genre, we will find the history of a music genre, and those who are behind them, namely, those "dynamic influencers", we will develop a new parameter
 that reveal the dynamic influencers.
 \subsubsection{Requirement 7}
-Although there are not enough information for us to show exactly how, there are always influence of the society on the genres, we can simplify all the complicated features
-of a society, analyze these influences with time, in different period of time, there are different genres to show various emotions and attitude.
-
+Music is a universal language, a perfect tool to express our emotion and our feeling and express our demands, most of us absolutely love music. We are compelled by it. We are provoked by it.
+We are moved by it. We are inspired by it. We feel connected to it. It reflects something profound about who we are and our experience of the world. And the most popular
+genre of the Expanding this further, strong support existed in early ethnomusicological literature for the idea that music can tell us many things about a particular culture through its instruments,
+instrument makers, and its performance structures that encompass the interaction between performers, audience and/orcomposers (Lomax, 1976; Merriam, 1964; Spearritt, 1980). Lomax`s (1976) work is still
+significant in this area, as it explored the specific way that culture was reflected in music practice and it highlighted a correlation between social structure and
+song structure. Lomax (1976) believed that a culture`s song performance style “has a special cultural and social role to play among human communication systems” (p. 12).
+Even earlier, Lomax (1968) had written that “a culture`s favoured song style reflects and reinforces the kind of behaviour essential to its main subsistence efforts and
+to its central and controlling social institutions” (p. 133). Further, Held`s (1984) work with
+the Kaluli people in the highlands of Papua New Guinea demonstrated a similar relationship between social structures and musical experience as discovered by Lomax (1976).
+In a word, music has a deep connection with culture and society, we will try to find a way to show the influence, find what features in our graph indicate changes of the
+society.
 \section{Assumptions and Justification}
 
 To simplify the problem and make it convenient for us to simulate real-life conditions, we make the following basic assumptions, each of which is properly justified.
@@ -269,8 +276,15 @@ However, there are also some disadvantages:
     \item No account is taken of the change in the number of replaceable batteries caused by different seasons
 \end{enumerate}
 \section{Requirement 2}
-We need a function $Sim(musci a, music b)$which return the similarity of the two subjects, which we will measure with the Pearson Correlation Coefficient.We will use the function to
-measure the similarity of both musicians and their songs. Thus we can measure the similarity between and within the genres by comparing the mean value of the similarity.
+We need a function $Sim(musci a, music b)$which return the similarity of the two subjects, which we will measure with the Pearson Correlation Coefficient.
+We will use the function to
+measure the similarity of both musicians and their songs. In statistics, the Pearson correlation coefficient  is a measure of linear correlation between
+two sets of data. It is the ratio between the covariance of two variables and the product of their standard deviations; thus it is essentially a normalized
+measurement of the covariance, such that the result always has a value between -1 and 1. As with covariance itself, the measure can only reflect a linear
+correlation of variables, and ignores many other types of relationship or correlation. As a simple example, one would expect the age and height of
+a sample of teenagers from a high school to have a Pearson correlation coefficient significantly greater than 0, but less than 1
+(as 1 would represent an unrealistically perfect correlation).
+Thus we can measure the similarity between and within the genres by comparing the mean value of the similarity.
 
 
 
@@ -280,7 +294,7 @@ In requirement 1, we discussed specific home with an area of 1600$ft^2$ now we h
 calculate out the value of $E$ and $M$, which are:$$K=\frac{A}{721.2}$$ $$E=\frac{e}{3}K$$  $$M=\frac{m}{3}K$$
 Next, in the former model, we only considered a few certain kinds of batteries, in the generalized model, we need to be able to deal with unknown kinds of batteries. Thus, we should first use $n$ and $m$ to represent the
 number if types of replaceable batteries and lithium batteries, so we can discuss them separately.\par
-If there are only replaceable batteries, we should still use the method discussed in plan 1，in a generalized version, where the restrictions should be:
+If there are only replaceable batteries, we should still use the method discussed in plan 1, in a generalized version, where the restrictions should be:
 $$\sum_{i=1}^nCiXi\geq E$$
 $$\sum_{i=1}^nPiXi\geq M+K$$
 The objective function is:
@@ -294,8 +308,11 @@ The objective function $\varphi (x)$, to evaluate the same thing with plan 1,  w
 $$\varphi (x) = 365 \times 0.15 \cdot Y \cdot E \cdot (\frac{\sum^n_{i=1}[\frac{l_i}{x_i}]C_iX_i+\sum_{i=n+1}^{n+m}C_iX_i}{\sum^n_{i=1}[\frac{l_i}{r_i}]C_iX_i\eta _i+\sum_{i=n+1}^{n+m}C_iX_i\eta _1})-1)
     + \sum_{i=n+1} ^{n+m}d_iX_i+\frac{365 \times 24}{\eta } \cdot Y \cdot \sum_{i=1} ^{n}d_iX_i $$
 \section{Requirement 3}
-The cement batteries sounded very attractive and charming, for people can easily see the benefit of such an invention, yet every new technology needs to be carefully discussed  before it can be extensively used. In the article,
-we will discuss it based on our study of a power system.
+For each genre, the median of the various musical characteristics of all musicians for the entire genre is calculated as the musical characteristics
+for the entire genre, and we will still use the Pearson Correlation Coefficient we discussed in the last question. We will compare different similarity between two
+genres, and find the higher similarity $a$ that is allowed between genres songs will be classified to a certain genre if there is a higher similarity than $a$, and a song
+that can`t' be classified into all the genres we have known will be classified into a new genre. For all genres, their changes in musical characteristics will be show in
+a curve.
 \subsection{a.the Advantages and the Disadvantages}
 Advantages:
 \begin{enumerate}
@@ -319,39 +336,15 @@ put the cement battery into the model for planning according to the parameters o
 floor area, the impact of cement battery cost in the objective function can be adjusted according to the actual situation such as customer requirements, so as to fully consider the advantages of
 cement battery that can save the floor area of the system. We might be about to time a proper coefficient to the cost of the cement battery to achieve such purpose. Yet we still need to know a few more parameters of the cement battery, our model requires the power and capacity is enough, while trying to cut the budget,so for every volume of a certain cement battery, we need to know the cost, capacity, and power of it,
 just like the batteries we discussed in our present model.
-\newpage \section{Requirement4}\Large
-In this part, we will traverse every edge and calculate the to find whether the similarity for between the influencer and the followers, thus we will be able to identify whether the influence is valid.
-Then, we will find the parameters with the most similarity in every edge, those music characteristics that appears the most will be considered more
-'contagious' than others.
-
-
-
-
-
-There is a lot of talk about going off-grid now. With energy prices rising,
-energy independence an increasingly hot topic, fear over using fossil fuels to generate power
-and the increasing chances of power failure on a national level, it's no wonder people want to go off-grid!
-Off-grid solar systems are complete packages for large scale projects. Homes
-that want to generate the majority of their energy through solar power or holiday
-properties that want to minimize running costs.\par
-An energy storage system allows you to capture electricity, store it as another
-form of energy (battery, thermal, mechanical) and then have it available to use
-when needed. The purpose of these storage units is to store energy produced during
-sunny daylight hours for use when the solar panels do not produce enough energy
-for the demand (night or cloud covered), or for storage and transfer of excess energy.
-Of the solar-powered homes that use an energy storage system, most use some sort
-of battery. Some homeowners have only one large battery, while others may use
-a “bank of batteries” (two or more batteries connected). Energy storage can be
-expensive and so homeowners should choose a system that is appropriate for their
-situation.\par
-Therefore a new model was developed, with is aimed to find the best solution of such a system, we use the method of Linear Programming to find the best solution that cost the least while having enough capacity and
-power to support all the appliance at home. With the solution provided by the model, we are able to find the cheapest way to build an off-grid
-solar power system that is fully capable of powering your home, no matter what size they are and what batteries you are going to use, there is always a way to find the best solution for you.\par
-In the future, we will take a new type of battery into consideration--the cement battery. Imagine an entire twenty storey concrete building which can store energy like a giant battery.
-Thanks to unique research from Chalmers University of Technology, Sweden, such a vision
-could someday be a reality. Researchers from the Department of Architecture and
-Civil Engineering recently published an article outlining a new concept for rechargeable
-batteries-- made of cement \par The ever-growing need for sustainable building materials poses great challenges for researchers. Doctor Emma Zhang, formerly of Chalmers University of Technology, Sweden, joined Professor Luping Tang’s research group several years ago to search for the building materials of the future. Together they have now succeeded in developing a world-first concept for a rechargeable cement-based battery. \par
-Sadly after careful reading of the research, we tend to see the cement battery as  a way to save space by replacing a certain part of the traditional commercial batteries rather than a complete alternative solution, due to its low energy density of the battery. Still, we are looking forward to the future technology, once its energy density can be promoted, it may rule the market of batteries for off-grid power system.
-
+\section{Requirement4}\Large
+Whether there is an effect can be determined by directly calculating the mean (median) of the similarity between a pair  of notes and whether it is generally,
+on average, higher than normal. Thus, we will iterate over each edge and, for each edge, find the similarity between the two nodes before and after, and for every
+edge the calculation will give us a characteristic that has the highest similarity between the two note, those with a higher chance to be our "champion" will be considered
+more contagious.
+\section{Requirement 5}
+To find the characteristics that might signify revolutions (major leaps) in musical evolution, we need to analyze those musicians that became active in the beginning of
+a genre, they are exactly artists who represented revolutionaries (influencers of major
+change) find the characteristics that are most different from the genre that the emerged from, they are most likely those we were seeking.
+\section{Requirement 7}
+The curve below showed the changes of similarity relative to time.
 \end{document}
