@@ -1,6 +1,6 @@
-import csv
-import re
 import time
+import pandas as pd
+import networkx as nx
 
 # 数据路径
 data_by_artist_src = "problem/2021_ICM_Problem_D_Data/data_by_artist.csv"
@@ -8,89 +8,47 @@ data_by_year_src = "problem/2021_ICM_Problem_D_Data/data_by_year.csv"
 full_music_data_src = "problem/2021_ICM_Problem_D_Data/full_music_data.csv"
 influence_data_src = "problem/2021_ICM_Problem_D_Data/influence_data.csv"
 
-# 初始化，读取全部数据
-print("开始初始化，读取数据")
-_timer_start=time.time()
+# 初始化
+print("开始初始化")
+_timer_start = time.time()
 
-artist = dict()
-
-with open(data_by_artist_src, encoding='utf-8') as csvfile:
-    data_by_artist = csv.DictReader(csvfile)
-
-    for record in data_by_artist:
-        artist[record['artist_id']] = record
-    del data_by_artist
-
-year = dict()
-
-with open(data_by_year_src, encoding='utf-8') as csvfile:
-    data_by_year = csv.DictReader(csvfile)
-
-    for record in data_by_year:
-        artist[record['year']] = record
-    del data_by_year
+## 读入数据
 
 
-followers_to = dict()
-for artist_id in artist.keys():
-    artist[artist_id]['music_list']=list()
-    followers_to[artist_id] = list()
+def _read(info, src):
+    try:
+        print(info, end=': ')
+        data = pd.read_csv(src)
+    except Exception as err:
+        print("读取失败！错误原因", err)
+        exit()
+    else:
+        # print("读取成功，内容示例：")
+        # print(data.head())
+        print('读取成功！')
+        return data
 
-with open(influence_data_src, encoding='utf-8') as csvfile:
-    influence_data = csv.DictReader(csvfile)
 
-    for record in influence_data:
-        if record['influencer_id'] not in artist.keys() or record['follower_id'] not in artist.keys():
-            continue
-        followers_to[record['influencer_id']].append(record['follower_id'])
-        artist[record['influencer_id']
-               ]['main_genre'] = record['influencer_main_genre']
-        artist[record['influencer_id']
-               ]['active_start'] = record['influencer_active_start']
-        artist[record['follower_id']
-               ]['main_genre'] = record['follower_main_genre']
-        artist[record['follower_id']
-               ]['active_start'] = record['follower_active_start']
-    del influence_data
+artist = _read("尝试读取艺术家信息", data_by_artist_src).set_index('artist_id',drop=False)
+year = _read("尝试读取年份信息", data_by_year_src).set_index('year',drop=False)
+music = _read("尝试读取音乐信息", full_music_data_src)
+influence_data = _read(
+    "尝试读取影响网络", influence_data_src).set_index('influencer_id',drop=False)
 
-music = dict()
+del _read
 
-with open(full_music_data_src, encoding='utf-8') as csvfile:
-    music_data = csv.DictReader(csvfile)
+## 数据整理
+music['release_date'] = pd.to_datetime(
+    music['release_date'], infer_datetime_format=True)
+music['artists_id'] = music['artists_id'].apply(eval)
+music['artist_names'] = music['artist_names'].apply(eval)
 
-    for record in music_data:
-        record['artists_id']=re.findall(r"[-+]?\d*\.\d+|\d+",record['artists_id'])
-        for artist_id in record['artists_id']:
-            if not artist_id in artist.keys():
-                continue
-        record['artist_name']=[artist[x]['artist_name'] for x in record['artists_id']]
-        music[record['song_title (censored)']]=record
-        for artist_id in record['artists_id']:
-            artist[artist_id]['music_list'].append(record['song_title (censored)'])
-    del music_data
+_timer_end = time.time()
+print("初始化完成，耗时：", _timer_end-_timer_start, "s")
 
-_timer_end=time.time()
-print("读取数据完成，耗时：",_timer_end-_timer_start)
+# 构建影响网络
 
-# 检查图中是否有环
-print("检查图中是否有环")
+influence_network=nx.DiGraph()
 
-def dfs(id,visited):
-    if id in visited:
-        print("卧槽真的有环！")
-        print(visited)
-        print("环环坏坏/(ㄒoㄒ)/~~")
-        return True
-    visited.add(id)
-    for jd in followers_to[id]:
-        if dfs(jd,visited.copy()):
-            return True
-    return False
-
-for id in artist.keys():
-    if dfs(id,set()):
-        break
-del dfs
-
-# 计算节点影响力
-
+influence_network.add_nodes_from(artist.index)
+influence_network.add_edges_from([x for x in influence_data[['influencer_id','follower_id']].itertuples(index=False,name=None)])
