@@ -1,90 +1,148 @@
-\documentclass{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% MCM/ICM LaTeX Template %%
+%% 2022 MCM/ICM           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\geometry{left=1in,right=0.75in,top=1in,bottom=1in}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Replace ABCDEF in the next line with your chosen problem
+% and replace 1111111 with your Team Control Number
+\newcommand{\Problem}{A}
+\newcommand{\Team}{2200655}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{newtxtext}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{newtxmath} % must come after amsXXX
+
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{lipsum}
 \usepackage{tabularx}
-\usepackage{graphicx}
 \usepackage{epstopdf}
-\usepackage{amsthm,amsmath,amssymb}
 \usepackage{mathrsfs}
-\usepackage{geometry}
 \usepackage{longtable}
 \usepackage{cite}
 \usepackage{makecell}
 \usepackage{diagbox}
-\title{Storing the Sun:a Model for Off-grid Power System Design}
-\author{Yang Wu, Yanzhi Fan, Ziheng Peng}
-\geometry{a4paper,scale=0.8}
+\lhead{Team \Team}
+\rhead{}
+\cfoot{}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
+\graphicspath{{.}}  % Place your graphic files in the same directory as your main document
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif, .png}
+\thispagestyle{empty}
+\vspace*{-16ex}
+\centerline{\begin{tabular}{*3{c}}
+        \parbox[t]{0.3\linewidth}{\begin{center}\textbf{Problem Chosen}\\ \Large \textcolor{red}{\Problem}\end{center}}
+         & \parbox[t]{0.3\linewidth}{\begin{center}\textbf{2022\\ MCM/ICM\\ Summary Sheet}\end{center}}
+         & \parbox[t]{0.3\linewidth}{\begin{center}\textbf{Team Control Number}\\ \Large \textcolor{red}{\Team}\end{center}} \\
+        \hline
+    \end{tabular}}
+%%%%%%%%%%% Begin Summary %%%%%%%%%%%
+% Enter your summary here replacing the (red) text
+% Replace the text from here ...
+\begin{center}
+    \textbf{Summary}
+\end{center}
+
+An energy storage system allows you to capture electricity, store it as another form of energy (battery, thermal, mechanical),
+and then have it available to use when needed. The purpose of these storage units is to store energy produced during sunny daylight hours for use when the solar
+panels do not produce enough energy for the demand (night or cloud-covered), or for storage and transfer of excess energy. Of the solar-powered homes that use an energy storage system,
+most use some sort of battery. Some homeowners have only one large battery, while others may use a “bank of batteries” (two or more batteries connected). Energy storage can be expensive
+and so homeowners should choose a system that is appropriate for their situation
+
+Our model is aimed to find the best solution for such a system, we use the method of Linear Programming to find the best solution that
+cost the least while having enough capacity and power to support all the appliance at home.
+
+Therefor, we should find the requirements for the house. The first requirement that we need to know
+is the capacity needed for the appliance to run long enough, to do so, we find some data form the
+EIA's RECS report in 2015 To
+know how many electrical appliances are there in a family of three people, then we divide the energy need by
+3 and times it with the population in a 1600 feet home, which attained by dividing the area with the
+Per capita housing size in the United States. With the same method that we find the requirement
+of maximum power.
+
+And then we looked at two different scenarios, the first is to use replaceable  batteries only,
+they will have no such thing as Instantaneous Power Rating, which makes the system more vulnerable
+to any sudden increasement  of the power that is usually caused by so high power appliances like
+the hairdryer. So it must have a higher power, the requirement for power became $\sum_{i=1}^2PiXi\geq M+K$, which is later proved very unhelpful in cutting the budget
+
+The second scenario is that we use a mixture of replaceable batteries and lithium Batteries, which
+turned the requirement for maximum power to be $\sum_{i=3}^5I_iX_i\geq M+K$. In fact, we found that the lithium Batteries are so superior that we should actually use them only.
+
+After finding the best solution for this home, we generalized the model to make it now capable of finding the solution for different homes with different area and with different optional batteries.
+We still looked at two different scenarios, and we take the area as a variable, so does the number of types of the two kinds of batteries so that we can discuss them separately.
+
+The following work is about a different kind of battery: the cement battery, we discussed the proper way to add it into our model and made a list of the information that we need to do so.
+\newline \begin{center}
+    \textbf{keywords:}\Large Linear Programming, Energy Storage System, Lithium Batteries Cement battery, Replaceable Batteries, Instantaneous Power Rating.
+
+\end{center}
+\textbf{Follow us @COMAPMath on Twitter or COMAPCHINAOFFICIAL on Weibo for the \newline
+    most up to date contest information.}
+
+
+% to here
+%%%%%%%%%%% End Summary %%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\pagestyle{fancy}
+% Uncomment the next line to generate a Table of Contents
+%\tableofcontents 
+\newpage
+\setcounter{page}{1}
+\rhead{Page \thepage\ }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Storing the Sun:a Model for Off-grid Power System Design}
 \Large
 \maketitle
-\begin{abstract}
-    \Large An energy storage system allows you to capture electricity, store it as another form of energy (battery, thermal, mechanical),
-    and then have it available to use when needed. The purpose of these storage units is to store energy produced during sunny daylight hours for use when the solar
-    panels do not produce enough energy for the demand (night or cloud-covered), or for storage and transfer of excess energy. Of the solar-powered homes that use an energy storage system,
-    most use some sort of battery. Some homeowners have only one large battery, while others may use a “bank of batteries” (two or more batteries connected). Energy storage can be expensive
-    and so homeowners should choose a system that is appropriate for their situation \par
-    Our model is aimed to find the best solution for such a system, we use the method of Linear Programming to find the best solution that
-    cost the least while having enough capacity and power to support all the appliance at home.\par
-    Therefor, we should find the requirements for the house. The first requirement that we need to know
-    is the capacity needed for the appliance to run long enough, to do so, we find some data form the
-    EIA's RECS report in 2015 To
-    know how many electrical appliances are there in a family of three people, then we divide the energy need by
-    3 and times it with the population in a 1600 feet home, which attained by dividing the area with the
-    Per capita housing size in the United States. With the same method that we find the requirement
-    of maximum power.\par
-    And then we looked at two different scenarios, the first is to use replaceable  batteries only,
-    they will have no such thing as Instantaneous Power Rating, which makes the system more vulnerable
-    to any sudden increasement  of the power that is usually caused by so high power appliances like
-    the hairdryer. So it must have a higher power, the requirement for power became $\sum_{i=1}^2PiXi\geq M+K$, which is later proved very unhelpful in cutting the budget\par
-    The second scenario is that we use a mixture of replaceable batteries and lithium Batteries, which
-    turned the requirement for maximum power to be $\sum_{i=3}^5I_iX_i\geq M+K$. In fact, we found that the lithium Batteries are so superior that we should actually use them only.\par
-    After finding the best solution for this home, we generalized the model to make it now capable of finding the solution for different homes with different area and with different optional batteries.
-    We still looked at two different scenarios, and we take the area as a variable, so does the number of types of the two kinds of batteries so that we can discuss them separately.\par
-    The following work is about a different kind of battery: the cement battery, we discussed the proper way to add it into our model and made a list of the information that we need to do so.
-    \newline \begin{center}
-        \textbf{keywords:}\Large Linear Programming, Energy Storage System, Lithium Batteries Cement battery, Replaceable Batteries, Instantaneous Power Rating.
-
-    \end{center}
-\end{abstract}
-\newpage
 \tableofcontents   % 若不想要目录, 注释掉该句
 \newpage
-
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 \subsection{Background}
-Music has been part of human societies since the beginning of time as an essential component of
-cultural heritage. As part of an effort to understand the role music has played in the collective
-human experience, we have been asked to develop a method to quantify musical evolution. There
-are many factors that can influence artists when they create a new piece of music, including their
-innate ingenuity, current social or political events, access to new instruments or tools, or other
-personal experiences. Our goal is to understand and measure the influence of previously
-produced music on new music and musical artists.\par
-Some artists can list a dozen or more other artists who they say influenced their own musical
-work. It has also been suggested that influence can be measured by the degree of similarity
-between song characteristics, such as structure, rhythm, or lyrics. There are sometimes
-revolutionary shifts in music, offering new sounds or tempos, such as when a new genre
-emerges, or there is a reinvention of an existing genre (e.g. classical, pop/rock, jazz, etc.). This
-can be due to a sequence of small changes, a cooperative effort of artists, a series of influential
-artists, or a shift within society.\par
-Many songs have similar sounds, and many artists have contributed to major shifts in a musical
-genre. Sometimes these shifts are due to one artist influencing another. Sometimes it is a change
-that emerges in response to external events (such as major world events or technological
-advances). By considering networks of songs and their musical characteristics, we can begin to
-capture the influence that musical artists have on each other. And, perhaps, we can also gain a
-better understanding of how music evolves through societies over time.\par
-Our team has been identified by the Integrative Collective Music (ICM) Society to develop a
-model that measures musical influence. This problem asks us to examine evolutionary and
-revolutionary trends of artists and genres.
+
+There are many types of bicycle road races including a criterium, a team time trial, and an
+individual time trial. A rider’s chance of success can vary for these contests depending on the
+type of event, the course, and the rider’s abilities. In an individual time trial, each individual
+cyclist is expected to ride a fixed course alone, and the winner is the rider who does so in the
+least amount of time.
+
+An individual rider can produce different levels of power for different lengths of time, and the
+amount of power and how long a given amount of power a rider can produce varies greatly
+between riders. A rider’s power curve indicates how long a rider can produce a given amount of
+power. In other words, for a particular length of time the power curve provides the maximum
+power a rider can maintain for that given time. Generally, the more power a rider produces, the
+less time the rider can maintain that power before having to reduce the amount of power and
+recover. A rider may choose to briefly exceed the limits on their power curve, but the rider then
+requires extra time at a lower power level to recover. Moreover, a rider’s power output in the
+past matters, and riders are increasingly fatigued as a race progresses.
+
+Riders are always looking to minimize the time required to cover a given distance. Given a
+particular rider’s capability according to that rider’s power curve, how should that rider apply
+power while traversing a given time trial course? Additionally, many types of riders may
+participate in an individual time trial, such as a time trial specialist, a climber, a sprinter, a
+rouleur, or a puncheur, and each type of rider has a distinct power curve.
+
+Our team aims to establish a model that can give the optimal plan for any particular rider, which tells them exactly when to accelerate,
+and when to slow down so that they can make the best of themselves.
 \subsection{Restatement of the Problem}
 \subsubsection{Requirement 1}
-\begin{enumerate}
-    \item The first part of this question asked us to first draw a  directed network
-          of musical influence, where influencers are connected to followers
-    \item Next we need a way to find the parameter that can be used to measure the "musical influence" in the network, which means we need a way to measure the
-          importance of certain musician, we also need to draw a certain part from the network to from a subnetwork to show our method.
-\end{enumerate}
-
+First we shall define a few "volunteers" to test our model, we need them to be various, we shall choose two different types of rider, time trial
+specialists and climbers, and we will define a male and a female for each of the two types of riders.
 \subsubsection{Requirement 2}
 We are now required to identify the parameters that we need to\
 use to measure "similarity" in music
@@ -92,7 +150,8 @@ characteristics and the proper way to combine them with different scalars. Then 
 and the data in the 3 files "full\_music\_data"
 "data\_by\_artist", "data\_by\_year",
 we were able to find out whether  artists
-within genre  are more similar  than artists between genres\par
+within genre  are more similar  than artists between genres
+
 \subsubsection{Requirement 3}
 It might not be so wise to try to analyze the influence and the development of music directly or only from the data for different musicians, we need a way to simplify our question.
 We think it's' the best to categorize the musicians, it can not only help us simplify our work, but also  improves the generality of our method.
@@ -139,42 +198,37 @@ To simplify the problem and make it convenient for us to simulate real-life cond
 
 \end{itemize}
 \section{Notations}
-
 \begin{center}
+    \resizebox{\textwidth}{!}{
     \begin{tabular}{clc}
-        {\bf Symbols} & {\bf Description}                                        & \quad {\bf Unit}  \\[0.25cm]
-        $A$           & Area of the home                                         & \quad $ft^2$
-        \\[0.2cm]
-        $E$           & Total daily electricity consumption                      & \quad kW$\cdot$h  \\[0.2cm]
-        $e$           & Total daily electricity consumption of a family of three & \quad kW$\cdot$h  \\[0.2cm]
-        $K$           & Population                                               & \quad 1           \\[0.2cm]
-        $M$           & Peak power                                               & \quad W           \\[0.2cm]
-        $m$           & Peak power of a family of three                          & \quad W           \\[0.2cm]
-        $X_i$         & Amount of the battery                                    & \quad 1           \\[0.2cm]
-        $d_i$         & Cost of a battery                                        & \quad $\$$        \\[0.2cm]
-        $P_i$         & Power of the battery                                     & \quad $W$         \\[0.2cm]
-        $C_i$         & The capacity of a battery                                & \quad  kW$\cdot$h \\[0.2cm]
-        $\eta _i$     & Energy Exchange Efficiency                               & \quad 1           \\[0.2cm]
-        $n$           & number of  types of replaceable batteries                & \quad 1           \\[0.2cm]
-        $m$           & number of types of lithium batteries                     & \quad 1           \\[0.2cm]
-        $I_i,t_i$     & Instantaneous Power Rating and its time of duration      & \quad $kW,s$      \\[0.2cm]
-        $ r_i $       & Time duration for stable power(before the power drop)    & \quad $h$         \\[0.2cm]
-        $l_i$         & battery life                                             & \quad  $d$        \\[0.2cm]
-        $K$           & Extra power pressure that hairdryer may bring            & \quad $W$         \\[0.2cm]
-        $Y$           & life of the system                                       & \quad  years      \\[0.2cm]
+        {\bf Symbols} & {\bf Description}                                       & \quad {\bf Unit}  \\[0.25cm]
+        $A$           & Frontal area                                            & \quad $m^2$       \\[0.25cm]
+        $E$           & Stamina-to-work conversion efficiency                   & \quad $J^{-1}$    \\[0.25cm]
+        $v$           & Velocity of the rider                                   & \quad $kW\cdot h$ \\[0.25cm]
+        $v_m$         & Velocity of the wind                                    & \quad $kW\cdot h$ \\[0.25cm]
+        $\eta $       & Transmission efficiency of the bike                     & \quad No units    \\[0.25cm]
+        $\rho $       & Density of the air                                      & \quad $kg/m^3$    \\[0.25cm]
+        $C_w$         & drag coefficient                                        & \quad No units    \\[0.25cm]
+        $C_r$         & coefficient of rolling friction                         & \quad No units    \\[0.25cm]
+        $F_r$         & Rolling friction resistance                             & \quad $N$         \\[0.25cm]
+        $F_w$         & Air friction                                            & \quad $N$         \\[0.25cm]
+        $F_s$         & The components of gravity in the direction of the slope & \quad $N$         \\[0.25cm]
+        $f$           & Resistance                                              & \quad $N$         \\[0.25cm]
+        $m$           & Number of types of lithium batteries                    & \quad No units    \\[0.25cm]
+        $\theta $     & Angle of a slope                                        & \quad $^{\circ}$  \\[0.25cm]
+        $M$           & Critical power of the rider                              & \quad $W$         \\[0.25cm]
+        $R$           & Stamina at the moment                                   & \quad No units    \\[0.25cm]
+        $Q$           & Recovery                                                & \quad $s^{-1}$    \\[0.25cm]
+        $R_0$         & Maximum Stamina                                         & \quad No unit     \\[0.25cm]
     \end{tabular}
+    }
 \end{center}
 We mark the different battery types with an integer. And $i$ here represent different batteries.
 
 \section{Requirement 1}
 \subsection{a. Analysis of Requirements}
-Build a directed graph where each musician represents an edge per row in the influence\_data. The node contains THE ID, musician's name, the genre he belongs to and the year
-he started his activity, and followers represent the node to which this node points.
-If you need a new node, you can fill in the related information given in this line about the follower.
-Next we need a way to show the influence of the artists. Naturally, we think the number of followers that an influencer influenced is a perfect index, as in academic community
-the impact factor of a certain work is about how many times it was cited, the more people who accept his views, the more influence he will have. 
-Then, influence information is added to each node, and its value is the number of points it pointed to.
-
+First we shall define a few "volunteers" to test our model, we need them to be various, we shall choose two different types of rider, time trial
+specialists and climbers, and we will define a male and a female for each of the two types of riders.
 \normalsize
 \begin{center}
     \begin{tabular}{|c | c |c | c |c  |c|}
@@ -196,7 +250,7 @@ Then, influence information is added to each node, and its value is the number o
     \end{tabular}
 \end{center}
 
-\large
+
 However, there are more to discuss than what's shown in the tabular data.
 \begin{enumerate}
     \item When we need to calculate the peak total power, we only add the highest power of a group of pair appliances that conflicts with each other.
@@ -222,6 +276,28 @@ The best solution is the solution that costs the least while being able to power
 to find the amount of different batteries that we will use in the system to make it the cheapest with certain restrictions. In general, we need the  capacity of the system to be enough for
 at least a day, we also need the system to have enough power to work normally even in peak hours.
 And there are three ways to build such a system.
+\begin{equation}
+    \left\{
+    \begin{array}{c}
+        0                \leqslant  P  \leqslant  \max \{ M,2M\frac{R}{R_0} \} \\
+        0                \leqslant  R  \leqslant  R_0                          \\
+        \frac{d R}{d t}  =          Q  -          \frac{P}{E}
+    \end{array}
+    \right.
+\end{equation}
+\begin{equation}
+    \left\{
+    \begin{array}{cc}
+        s\geqslant s_0                  &                   \\
+        v=\frac{\eta \cdot P}{f} ,      & v=\frac{d s}{d t} \\
+        f=F_r+F_w+F_s                   &                   \\
+        F_r=C_rmg                       &                   \\
+        F_w=\rho C_w A(v-v_w)^2         &                   \\
+        F_s=mg\sin \theta               &                   \\
+        \theta=mg\arctan\frac{d h}{d t} &
+    \end{array}
+    \right.
+\end{equation}
 \subsubsection{Plan 1: all batteries are replaceable batteries}
 In this plan, the power of the batteries will change after a period, which can be a potential risk of the system, so we change the batteries continuously and periodically to make
 the power of the system to be stable, and the new stable power is what we will only care ever since. We will change $\frac{l_i}{r_i}$ of the batteries, so the new power $P_i$ is  defined
@@ -285,16 +361,16 @@ Thus we can measure the similarity between and within the genres by comparing th
 \section{Requirement 3}
 \begin{enumerate}
     \item For each genre, the median of the various musical characteristics of all musicians for the entire genre is calculated as the musical characteristics
-    for the entire genre, and we will still use the Pearson Correlation Coefficient we discussed in the last question. We will compare different similarity between two
-    genres, and find the highest similarity $a$ that is allowed between genres songs will be classified to a certain genre if there is a higher similarity than $a$, and a song
-    that can't be classified into all the genres we have known will be classified into a new genre. For all genres, their changes in musical characteristics will be show in
-    a curve.
- 
-    \item One of the reason why genres are hard to distinguish is that most musicians were often influences by a group of other musicians from different genres, so there are 
-    come connections between nearly every two genres. Yet when what we want to find is not something that blurry, we want to know the relationship between the genres,
-    so we set a standard below which the influence are ignored. It is clear that logically, if we want to draw a graph that show the causal relationship between the genres 
-    the graph show be an acyclic graph, thus the standard value should be the smallest value it can take to make the value an acyclic graph. The number, as we find out later
-    by a few simple tests, is 45.
+          for the entire genre, and we will still use the Pearson Correlation Coefficient we discussed in the last question. We will compare different similarity between two
+          genres, and find the highest similarity $a$ that is allowed between genres songs will be classified to a certain genre if there is a higher similarity than $a$, and a song
+          that can't be classified into all the genres we have known will be classified into a new genre. For all genres, their changes in musical characteristics will be show in
+          a curve.
+
+    \item One of the reason why genres are hard to distinguish is that most musicians were often influences by a group of other musicians from different genres, so there are
+          come connections between nearly every two genres. Yet when what we want to find is not something that blurry, we want to know the relationship between the genres,
+          so we set a standard below which the influence are ignored. It is clear that logically, if we want to draw a graph that show the causal relationship between the genres
+          the graph show be an acyclic graph, thus the standard value should be the smallest value it can take to make the value an acyclic graph. The number, as we find out later
+          by a few simple tests, is 45.
 \end{enumerate}
 
 \section{Requirement4}\Large
@@ -308,4 +384,8 @@ a genre, they are exactly artists who represented revolutionaries (influencers o
 change) find the characteristics that are most different from the genre that the emerged from, they are most likely those we were seeking.
 \section{Requirement 7}
 The curve below showed the changes of similarity relative to time.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
+\end
