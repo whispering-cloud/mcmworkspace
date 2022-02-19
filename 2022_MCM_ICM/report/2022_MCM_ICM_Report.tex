@@ -216,51 +216,59 @@ To simplify the problem and make it convenient for us to simulate real-life cond
             $f$           & Resistance                                              & \quad $N$         \\[0.25cm]
             $m$           & Number of types of lithium batteries                    & \quad No units    \\[0.25cm]
             $\theta $     & Angle of a slope                                        & \quad $^{\circ}$  \\[0.25cm]
-            $M$           & Critical power of the rider                             & \quad $W$         \\[0.25cm]
+            $M$           & Maximum  power of the rider                             & \quad $W$         \\[0.25cm]
             $R$           & Stamina at the moment                                   & \quad No units    \\[0.25cm]
-            $Q$           & Recovery                                                & \quad $s^{-1}$    \\[0.25cm]
+            $CP$          & Recovery                                                & \quad $s^{-1}$    \\[0.25cm]
             $R_0$         & Maximum Stamina                                         & \quad No unit     \\[0.25cm]
             $P$           & Power of the rider                                      & \quad $W$         \\[0.25cm]
         \end{tabular}
     }
 \end{center}
 \section{Model Development}
-We aim to make an individualized, thorough strategy for the riders, we should first what features of them that we should take into account. The speed of a rider,
-is closely related to two features, stamina(endurance), and strength. A rider that is stronger can surely ride faster--if he or she is not out of strength, and the power
-to maintain speed is called stamina.  Research(Mark Burnley \& Andrew M. Jones, 2016) has showed that the product of distance and time is a constant value, which we denote
-as $R_0$, and given that stamina will slowly recover, let's introduce a new parameter:recovery, we can then set restrictions to simulate the change of strength in a race.
+We aim to make an individualized, thorough strategy for the riders, we should first find what features of them that we should take into account. 
+The speed of a rider 
+is closely related to two features, stamina(endurance), and strength. A rider that is stronger can surely ride faster--if he or she is not out of strength, and the ability 
+to maintain speed is called stamina.
+Here we measure the strength of riders by the power of the rider riding. Research(Mark Burnley \& Andrew M. Jones, 2016)\cite{doi:10.1080/17461391.2016.1249524} has showed the Power-Durance(PD) relationship 
+which is that the product of time and the difference between the power in this period and the critical power $CP$ is a constant value, which we
+denote as $R_0$,  thus we can  set restrictions  to simulate how fatigue will influence our riders in a race.
 \begin{equation}
     \left\{
     \begin{array}{c}
-        0                \leqslant  P  \leqslant  \max \{ M,2M\frac{R}{R_0} \} \\
-        0                \leqslant  R  \leqslant  R_0                          \\
+        0                \leqslant  P  \leqslant  M\frac{R}{R_0} \\
+        0                \leqslant  R  \leqslant  R_0            \\
         \frac{d R}{d t}  =          Q  -          \frac{P}{E}
     \end{array}
     \right.
 \end{equation}
 
-Here we measure the strength of riders by The power of the rider riding. In reality the change of speed is surely not sudden, but it is rapid enough, here to
-simplify the problem and make it convenient for us to simulate real-life conditions, we can treat them as sudden. Thus, the speed can be easily calculated by a
-set of basic physic equations:\
+The first restriction indicates that fatigue will slow down the rider, the lower the stamina, the less power a rider can give. The second and third restriction 
+showed changes of a stamina: it will slowly recover, yet it has its limit($R_0$).
 
+Given that we aim to guide our riders, it is obvious we can not give them every detailed instructions that ask them to change their continuously, so we can treat the time 
+as a collection of discrete time periods to simplify this question and give a particle solution to guide our riders.
+Then we can describe how the parameters of the rider like the distance, velocity and stamina changes in a short period of time with a set of physic equations below:
 \begin{equation}
-    \left\{
-    \begin{array}{cc}
-        v=\frac{\eta \cdot P}{f} ,      & v=\frac{d s}{d t} \\
-        f=F_r+F_w+F_s                   &                   \\
-        F_r=C_rmg                       &                   \\
-        F_w=\rho C_w A(v-v_w)^2         &                   \\
-        F_s=mg\sin \theta               &                   \\
-        \theta=mg\arctan\frac{d h}{d t} &
+    func: \delta_p(s,p,v)=>(\delta s_p,\delta r_p,\delta v_p)=\left\{
+    \begin{array}{c}
+        f=F_r+F_w+F_s                   \\
+        F_r=C_rmg                       \\
+        F_w=\rho C_w A(v-v_w)^2         \\
+        F_s=mg\sin \theta               \\
+        \theta=mg\arctan\frac{d h}{d t} \\
+        a=\frac{\frac{P}{v_0}-f}{m}     \\
+        v_p=v_0+a                       \\
+        s_p=\frac{v_0+v}{2}+s_0         \\
+        s\geqslant s_0
     \end{array}
     \right.
 \end{equation}
 
-In reality, the rider have to focus on the riding, they can not change their power all the time, thus building a continuous model is not only very complex, 
-but also unnecessary and unless. So we split up the time in a race and use dynamic programming to find the best solution, 
+In reality, the rider have to focus on the riding, they can not change their power all the time, thus building a continuous model is not only very complex,
+but also unnecessary and unless. So we split up the time in a race and use dynamic programming to find the best solution,
 and a proof of the reasonableness of this method will be given later.
 
-The state transition equation of the dynamic programming is:$$dp[i+S_p][j+R_p]=\min^{p=p_{max}}_{P=0}\{dp[i][j]+1\}$$
+The state transition equation of the dynamic programming is:$$dp_{i+s_p,j+R_p,v+v_p}= min_{p = 0}^{M*\frac{j}{R}}\{dp_{i,j,v}+1\}$$
 
 In which $i$ is the stage of time, and $j$ is the stage of strength.
 \section{Requireemt 1}
@@ -320,12 +328,7 @@ $$\varphi (x) = 365 \times 0.15 \cdot Y \cdot E \cdot (\frac{\sum^2_{i=1}[\frac{
 Our calculation indicated that plan 2 is way better, in fact, it is the best we use lithium batteries only.
 \newline
 \begin{center}
-    \begin{tabular}{|c |c|c| c |c |c|c|}\hline
-        \diagbox {\bf Plans}{\bf Batteries} & \bf 1 & \bf 2 & \bf 3          & \bf 4          & \bf 5          & total cost(\$)  \\ \hline
 
-        Plan 1                              & 77    & 0     & not considered & not considered & not considered & 49,645,905.6141 \\\hline
-        Plan 2                              & 0     & 0     & 0              & 2              & 1              & 35,027.3716     \\\hline
-    \end{tabular}
 \end{center}
 Our model has the following advantages:
 \begin{enumerate}
@@ -342,7 +345,17 @@ However, there are also some disadvantages:
     \item No account is taken of the change in the number of replaceable batteries caused by different seasons
 \end{enumerate}
 \section{Requirement 2}
-Here we will apply our model to a time trial courses--the --for each power profile we defined above to prove that out model can be solved
+Here we will apply our model to a time trial courses--the --for each power profile we defined above to prove that out model can be solved,
+the value of some parameter is show below:
+\begin{tabular}{|c |c|}\hline
+    \bf Parameters & \bf Values \\\hline
+    $C_r$          & 0.003      \\\hline
+    $m$            & 80         \\\hline
+    $g$            & 9.8        \\\hline
+    $\eta $        & 0.95       \\\hline
+    $\rho  $       & 1.2        \\\hline
+    $c_wA$         & 0.31       \\\hline
+\end{tabular}
 \section{Requirement 3}
 \begin{enumerate}
     \item For each genre, the median of the various musical characteristics of all musicians for the entire genre is calculated as the musical characteristics
@@ -367,10 +380,14 @@ more contagious.
 To find the characteristics that might signify revolutions (major leaps) in musical evolution, we need to analyze those musicians that became active in the beginning of
 a genre, they are exactly artists who represented revolutionaries (influencers of major
 change) find the characteristics that are most different from the genre that the emerged from, they are most likely those we were seeking.
-\section{Requirement 7}
-The curve below showed the changes of similarity relative to time.
-
+\newpage
+\section{Requirement 6}
+\begin{center}
+    \huge \textbf{Rider's Guidance}
+\end{center}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{plain}
+\bibliography{2022_MCM_ICM_Report}
 \end{document}
 \end
