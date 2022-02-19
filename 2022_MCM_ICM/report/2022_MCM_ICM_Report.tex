@@ -40,7 +40,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
-\graphicspath{{.}}  % Place your graphic files in the same directory as your main document
+\graphicspath{{./figure/}}  % Place your graphic files in the same directory as your main document
 \DeclareGraphicsExtensions{.pdf, .jpg, .tif, .png}
 \thispagestyle{empty}
 \vspace*{-16ex}
@@ -215,7 +215,7 @@ To simplify the problem and make it convenient for us to simulate real-life cond
             $F_s$         & The components of gravity in the direction of the slope & \quad $N$         \\[0.25cm]
             $f$           & Resistance                                              & \quad $N$         \\[0.25cm]
             $m$           & Number of types of lithium batteries                    & \quad No units    \\[0.25cm]
-            $\theta $     & Angle of a slope                                        & \quad $^{\circ}$  \\[0.25cm]
+            $\theta $     & Angle of a slope                                        & \quad rad         \\[0.25cm]
             $M$           & Maximum  power of the rider                             & \quad $W$         \\[0.25cm]
             $R$           & Stamina at the moment                                   & \quad No units    \\[0.25cm]
             $CP$          & Recovery                                                & \quad $s^{-1}$    \\[0.25cm]
@@ -225,11 +225,13 @@ To simplify the problem and make it convenient for us to simulate real-life cond
     }
 \end{center}
 \section{Model Development}
-We aim to make an individualized, thorough strategy for the riders, we should first find what features of them that we should take into account. 
-The speed of a rider 
-is closely related to two features, stamina(endurance), and strength. A rider that is stronger can surely ride faster--if he or she is not out of strength, and the ability 
+We aim to make an individualized, thorough strategy for the riders, we should first find what features of them that we should take into account.
+The speed of a rider
+is closely related to two features, stamina(endurance), and strength. A rider that is stronger can surely ride faster--if he or she is not out of strength, and the ability
 to maintain speed is called stamina.
-Here we measure the strength of riders by the power of the rider riding. Research(Mark Burnley \& Andrew M. Jones, 2016)\cite{doi:10.1080/17461391.2016.1249524} has showed the Power-Durance(PD) relationship 
+Here we measure the strength of riders by the power of the rider riding. Research(Mark Burnley \& Andrew M. Jones, 2016)\cite{doi:10.1080/17461391.2016.1249524}
+(Peter Leo,2021)\cite{leo2021power}(Andrea Zignoli1, Francesco Biral1,2020)\cite{zignoli2020prediction}
+has showed the Power-Durance(PD) relationship
 which is that the product of time and the difference between the power in this period and the critical power $CP$ is a constant value, which we
 denote as $R_0$,  thus we can  set restrictions  to simulate how fatigue will influence our riders in a race.
 \begin{equation}
@@ -242,14 +244,14 @@ denote as $R_0$,  thus we can  set restrictions  to simulate how fatigue will in
     \right.
 \end{equation}
 
-The first restriction indicates that fatigue will slow down the rider, the lower the stamina, the less power a rider can give. The second and third restriction 
+The first restriction indicates that fatigue will slow down the rider, the lower the stamina, the less power a rider can give. The second and third restriction
 showed changes of a stamina: it will slowly recover, yet it has its limit($R_0$).
 
-Given that we aim to guide our riders, it is obvious we can not give them every detailed instructions that ask them to change their continuously, so we can treat the time 
+Given that we aim to guide our riders, it is obvious we can not give them every detailed instructions that ask them to change their continuously, so we can treat the time
 as a collection of discrete time periods to simplify this question and give a particle solution to guide our riders.
 Then we can describe how the parameters of the rider like the distance, velocity and stamina changes in a short period of time with a set of physic equations below:
 \begin{equation}
-    func: \delta_p(s,p,v)=>(\delta s_p,\delta r_p,\delta v_p)=\left\{
+    func: \delta_p(s,p,v)=>( \delta s_p,\delta r_p,\delta v_p)=\left\{
     \begin{array}{c}
         f=F_r+F_w+F_s                   \\
         F_r=C_rmg                       \\
@@ -270,66 +272,24 @@ and a proof of the reasonableness of this method will be given later.
 
 The state transition equation of the dynamic programming is:$$dp_{i+s_p,j+R_p,v+v_p}= min_{p = 0}^{M*\frac{j}{R}}\{dp_{i,j,v}+1\}$$
 
-In which $i$ is the stage of time, and $j$ is the stage of strength.
-\section{Requireemt 1}
+In which $i$ is the stage of time, $j$ is the stage of stamina, and $v$is the stage of velocity.
+\section{Requireemt 1:Power Profile}
 First we shall define a few "volunteers" to test our model, we need them to be various, we shall choose two different types of rider, time trial
-specialists and climbers, and we will define a male and a female for each of the two types of riders.
-\normalsize
-\begin{center}
-    \begin{tabular}{|c | c |c | c |c  |c|}
-        \hline
-        \bf Appliances  & \makecell {\bf Holding of a                                                              \\ \bf three-people-family in average} & \makecell{\bf Average daily\\ \bf usage time($h/d$)}  & \bf Time period of use
-                        & \bf Power($kW$)                                                                          \\ \hline
-        Washing Machine & 0.85                        & 1                        & \makecell{conflict with         \\the clothes dryer} & 0.4 \\ \hline
-        Television      & 2.58                        & \makecell{1.06(workdays)                                   \\3.20(weekend)} & No conflict & 0.1 \\ \hline
-        Clothes Dryer   & 0.76                        & 1                        & \makecell{conflict with         \\the Washing Machine}& 0.75 \\ \hline
-        Dishwasher      & 0.68                        & 1                        & \makecell{conflict with         \\ the microwave}& 0.8\\ \hline
-        Microwave       & 1.05                        & 0.25                     & \makecell{conflict with         \\ the dishwasher } & 0.75 \\\hline
-        Fridge          & 1.02                        & 24                       & No conflict             & 0-0.2 \\ \hline
-        Cooling System  & 0.87                        & 24 in summer             & No conflict             & 1.6   \\ \hline
-        Heating System  & 0.32                        & 24 in winter             & No conflict             & 4.6   \\ \hline
-        hairdryers      & 3.00                        & 0.03                     & No conflict             & 0.3   \\ \hline
-        Vacuum Cleaner  & 0.78                        & 0.5                      & No conflict             & 1.4   \\ \hline
-        Computer        & 1.77                        & 5.4                      & No conflict             & 0.3   \\\hline
-        Lighting System & 8.12                        & 4                        & No conflict             & 0.04  \\ \hline
-    \end{tabular}
-\end{center}
+specialists and climbers, and we will define a male and a female for each of the two types of riders. To keep the data from getting out of line, we analyze the power curve
+from https://www.strava.com/pros following the following steps:
+First, we derive from out model that the equation of the curve should be exponential, which is $y=m*n^x+k$, and it fits the curve we acquired.
 
-
-However, there are more to discuss than what's shown in the tabular data.
-\begin{enumerate}
-    \item When we need to calculate the peak total power, we only add the highest power of a group of pair appliances that conflicts with each other.
-    \item We will not take the consumption of hairdryers into account, however, it is important to consider the power pressure it brings.
-    \item 3.	We take the coverage of the cooling and heating systems into account for it has variable power. The power of a VRV is sure to change with the area it covers.
-          The data of power means the average power that a room requires, and we will time the coverage with it to come up with the power of the entire system.
-    \item The data of holding means the number of illumination lamps and lanterns when it comes to the Lighting System, and we use the average power of the lamps and bulbs to calculate
-          the daily power consumption.
-    \item With the tabular data we are now able to calculate the daily power consumption in a common family by accumulating the product of holding usage time and power of each of the
-          appliances. And the peak power is acquired by summing the power of all the appliances that are not in conflict.
-    \item For the power of the cooling and heating system are different, we will discuss the consumption separately in summer and winter. But eventually, we will only take the larger
-          one into consideration.
-\end{enumerate}
-And according to our calculation, the daily consumption is 41.02-41.22$kW$ in summer and 43.32-43.52$kW$ in winter, and the peak power is 6.55$kW$ in summer and 9.55$kW$ in winter.
-\newline
-\newline
-Then with the data from a survey conducted by the Beijing University, the Per Capita Living Space is 67$m^2$, which is about 721.2$ft^2$. So we get the population of the 1600-feet home
-by $$K=\frac{A}{721.2}$$ and thus we have the total power consumption and the peak power by $$E=\frac{e}{3}K$$ and $$M=\frac{m}{3}K$$. In the end, the calculation shows that the 1600-feet home has a Total daily electricity consumption
-of $31.92kW\cdot h$ and a maximum power requirement of $9.55W$
-
-
-$$\sum_{i=1}^3(1+[\frac{l-i}{r_i}]) \cdot C_i \cdot X_i + \sum_{i=3}C_iX_i\geq E$$
-$$\sum_{i=1}^5P_iX_i\geq M$$
-$$\sum_{i=3}^5I_iX_i\geq M+K$$
-$$\sum_{i=n+1}^5 t_iX_i\geq 120$$
-The objective function, to evaluate the same thing with plan 1, $\varphi (x)$ will be:
-$$\varphi (x) = 365 \times 0.15 \cdot Y \cdot E \cdot (\frac{\sum^2_{i=1}[\frac{l_i}{x_i}]C_iX_i+\sum_{i=3}^5C_iX_i}{\sum^2_{i=1}[\frac{l_i}{r_i}]C_iX_i\eta _i+\sum_{i=3}^5C_iX_i\eta _1})-1)
-    + \sum_{i=3} ^5d_iX_i+\frac{365 \times 24}{\eta } \cdot Y \cdot \sum_{i=1} ^2d_iX_i $$
-\subsection{Power Profile}
-Our calculation indicated that plan 2 is way better, in fact, it is the best we use lithium batteries only.
-\newline
-\begin{center}
-
-\end{center}
+Then we fit `s' and `s' curve to the equation, we get $m,n,k$ we then get another set of equation:
+\begin{equation}
+    \left\{
+    \begin{array}{c}
+        M=n*m+k                 \\
+        E=\frac{n*m+k}{R*(1-n)} \\
+        CP=k*(1-n)
+    \end{array}
+    \right.
+\end{equation}
+Then, We can set $R$ to any proper number, here we set it to 1000. So we get a file of the riders:%此处应有表
 Our model has the following advantages:
 \begin{enumerate}
     \item The conversion efficiency and battery cost are considered together.
@@ -356,6 +316,13 @@ the value of some parameter is show below:
     $\rho  $       & 1.2        \\\hline
     $c_wA$         & 0.31       \\\hline
 \end{tabular}
+\begin{figure}
+    \centering
+    \includegraphics[width=1\columnwidth]{men-elite-individual-time-trial}
+    \caption{course profile(from https://www.flanders2021.com)}
+\end{figure}
+We first find the course profile from https://www.flanders2021.com
+then use the Reverse-Engineering Visualizations method developed by Jorge Poco1 and Jeffrey Heer in 2017\cite{poco2017reverse} to get the data we need about the racing track.
 \section{Requirement 3}
 \begin{enumerate}
     \item For each genre, the median of the various musical characteristics of all musicians for the entire genre is calculated as the musical characteristics
