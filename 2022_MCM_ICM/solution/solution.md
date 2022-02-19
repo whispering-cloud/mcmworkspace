@@ -43,4 +43,5 @@
 - 路程单位 0.01km 
 - 体力单位 1J 
 - 速度单位 0.1m/s
-$$dp_{i+s_p,j+r_p,v+v_p}= min_{p = 0}^{M*\frac{j}{R}}\{dp_{i,j,v}+1\}$$
+- 时间单位 1s
+$$dp_{i+1,j+r_p,v+v_p}= max_{p = 0}^{M*\frac{j}{R}}\{dp_{i,j,v}+s_p\}$$
