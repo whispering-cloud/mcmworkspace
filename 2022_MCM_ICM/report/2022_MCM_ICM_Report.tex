@@ -61,7 +61,7 @@ cyclist is expected to ride a fixed course alone, and the winner is the rider wh
 least amount of time.
 
 Riders are always looking to minimize the time required to cover a given distance. Given a
-particular rider’s capability according to that rider’s power curve, how should that rider apply
+particular rider's capability according to that rider's power curve, how should that rider apply
 power while traversing a given time trial course?
 Our team aims to establish a model that can give the optimal plan for any particular rider, which tells them exactly when to accelerate,
 and when to slow down so that they can make the best of themselves. Firstly, we assume the air to be stationary and designed a mathematical model of movement
@@ -119,23 +119,23 @@ Finally, we are able to  give a two-page detailed guide to the riders and their 
 \subsection{Background}
 
 There are many types of bicycle road races including a criterium, a team time trial, and an
-individual time trial. A rider’s chance of success can vary for these contests depending on the
-type of event, the course, and the rider’s abilities. In an individual time trial, each individual
+individual time trial. A rider's chance of success can vary for these contests depending on the
+type of event, the course, and the rider's abilities. In an individual time trial, each individual
 cyclist is expected to ride a fixed course alone, and the winner is the rider who does so in the
 least amount of time.
 
 An individual rider can produce different levels of power for different lengths of time, and the
 amount of power and how long a given amount of power a rider can produce varies greatly
-between riders. A rider’s power curve indicates how long a rider can produce a given amount of
+between riders. A rider's power curve indicates how long a rider can produce a given amount of
 power. In other words, for a particular length of time the power curve provides the maximum
 power a rider can maintain for that given time. Generally, the more power a rider produces, the
 less time the rider can maintain that power before having to reduce the amount of power and
 recover. A rider may choose to briefly exceed the limits on their power curve, but the rider then
-requires extra time at a lower power level to recover. Moreover, a rider’s power output in the
+requires extra time at a lower power level to recover. Moreover, a rider's power output in the
 past matters, and riders are increasingly fatigued as a race progresses.
 
 Riders are always looking to minimize the time required to cover a given distance. Given a
-particular rider’s capability according to that rider’s power curve, how should that rider apply
+particular rider's capability according to that rider's power curve, how should that rider apply
 power while traversing a given time trial course? Additionally, many types of riders may
 participate in an individual time trial, such as a time trial specialist, a climber, a sprinter, a
 rouleur, or a puncheur, and each type of rider has a distinct power curve.
@@ -260,10 +260,10 @@ and it fits the curve we acquired.
     \includegraphics[width=1\columnwidth]{Eddie Anderson}
     \caption{Eddie Anderson's power curve}
 \end{figure}
-\begin{figure}
+\begin{figure}[htbp]
     \centering
-    \includesvg{1.svg}
-    \caption{Eddie Anderson's power curve}
+    \includesvg{Eddie Anderson}
+    \caption{Eddie Anderson's fitting curve}
 \end{figure}
 
 \begin{figure}
@@ -273,19 +273,19 @@ and it fits the curve we acquired.
 \end{figure}
 \begin{figure}
     \centering
-    \includesvg{2.svg}
-    \caption{Eddie Anderson's power curve}
+    \includesvg{Jessica Allen}
+    \caption{Jessica Allen's fitting curve}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=1\columnwidth]{Johannes Weber}
-    \caption{Johannes Weber's power curve}
+    \caption{Johannes Weber's fitting curve}
 \end{figure}
 \begin{figure}
     \centering
-    \includesvg{3.svg}
-    \caption{Eddie Anderson's power curve}
+    \includesvg[width=0.6\columnwidth]{Johannes Weber}
+    \caption{Johannes Weber's fitting curve}
 \end{figure}
 
 \begin{figure}
@@ -295,8 +295,8 @@ and it fits the curve we acquired.
 \end{figure}
 \begin{figure}
     \centering
-    \includesvg{4.svg}
-    \caption{Eddie Anderson's power curve}
+    \includesvg{Erika Ackerlund}
+    \caption{Erika Ackerlund's fitting curve}
 \end{figure}
 Then we fit all four riders' power curve to the equation, we get the value of $m,n,k$ for each rider. Accounting to our model, the relationship between these coefficients
 and our parameters are:
