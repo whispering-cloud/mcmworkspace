@@ -81,7 +81,10 @@ int solve()
 					int tmpr = max(0, min(1000, j + del.dr));
 					int tmpv = max(0, min(300, k + del.dv));
 					int tmps = max(0, dp[i][j][k] + del.ds);
-					if (dp[i + 1][tmpr][tmpv] < tmps || dp[i + 1][tmpr][tmpv] == INF)
+
+					int judger = dp[i + 1][tmpr][tmpv] >= INF ? -1 : dp[i + 1][tmpr][tmpv];
+
+					if (judger < tmps)
 					{
 						dp[i + 1][tmpr][tmpv] = tmps;
 						tmpt.ds = i; // this ds = time
@@ -108,8 +111,11 @@ void path()
 {
 	int j = ansr.dr;
 	int k = ansr.dv;
-	for (int i = total_time; i > 0; i--)
+	for (int i = total_time - 1; i > 0; i--)
 	{
+		if(i==252) {
+			cout << "Attention";
+		}
 		ansp[i] = pre[j][k][i].power;
 		j = pre[j][k][i].dr;
 		k = pre[j][k][i].dv;
