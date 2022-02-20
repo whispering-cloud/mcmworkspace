@@ -45,3 +45,28 @@
 - 速度单位 0.1m/s
 - 时间单位 1s
 $$dp_{i+1,j+r_p,v+v_p}= max_{p = 0}^{M*\frac{j}{R}}\{dp_{i,j,v}+s_p\}$$
+
+
+
+## 第一问
+两个TT 一男一女
+男TT Eddie Anderson https://www.strava.com/activities/6705570242/power-curve
+女TT Jessica Allen https://www.strava.com/activities/6681616427/power-curve
+两个climber 一男一女
+男climber Johannes Weber https://www.strava.com/activities/5860321729/power-curve
+女climber eackerlund  https://www.strava.com/activities/6699067197/power-curve
+## 第二问
+代入 我就不写了
+
+## 第三问
+加上 $v_w$ 作为参数输入
+## 第四问
+对power curve 平滑窗口
+再重新计算时间
+## 第五问
+对每个人进行一次模型的跑（？）
+按时间排序
+排第四名的按照模型来跑
+前三名就跟在第四名前面帮他挡风
+
+
