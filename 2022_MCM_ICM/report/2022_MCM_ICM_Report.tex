@@ -60,16 +60,27 @@
 \end{center}
 In an individual time trial, each individual cyclist is expected to ride a fixed course alone, and the winner is the rider who does so in the least amount of time.
 
-Riders are always looking to minimize the time required to cover a given distance. Given a particular rider's capability according to that rider's power curve, how should that rider apply power while traversing a given time trial course?
+Riders are always looking to minimize the time required to cover a given distance. Given a
+particular rider's capability according to that rider's power curve, how should that rider apply
+power while traversing a given time trial course?
+Our team aims to establish a model that can give the optimal plan for any particular rider, which tells them exactly when to accelerate,
+and when to slow down so that they can make the best of themselves. Firstly, we assume the air to be stationary and designed a mathematical model of movement
+in the race, and then we studied the power-duration models built by multiple articles(Mark Burnley \& Andrew M. Jones, 2016)\cite{doi:10.1080/17461391.2016.1249524}
+(Peter Leo,2021)\cite{leo2021power}(Andrea Zignoli, Francesco Biral,2020)\cite{zignoli2020prediction}, and found that all of them can be described as the product of time and the difference
+between the power in this period and the critical power $CP$ is a constant value, which we denote as $R_0$ ,which will slowly recover, but can never exceed $R_O$, yet the decline of stamina, The effects of lactic acid accumulation hardly fade away 
+in the race, instead it will accumulate at a fixed rate which we call the lactate effect rate, denoted as $L$. With these model we can set restrictions  to simulate how fatigue will influence our riders in a race.thus we can  set restrictions
+to simulate how fatigue will influence the riders in a race.
 
 Our team aims to establish a model that can give the optimal plan for any particular rider, which tells them exactly when to accelerate, and when to slow down so that they can make the best of themselves. Firstly, we assume the air to be stationary and designed a mathematical model of movement in the race, and then we studied the power-duration models built by multiple articles(Mark Burnley \& Andrew M. Jones, 2016)\cite{doi:10.1080/17461391.2016.1249524} (Peter Leo,2021)\cite{leo2021power}(Andrea Zignoli, Francesco Biral,2020)\cite{zignoli2020prediction}, and found that all of them can be described as the product of time and the difference between the power in this period and the critical power $CP$ is a constant value, which we denote as $R_0$ ,thus we can  set restrictions  to simulate how fatigue will influence the riders in a race.
 
 In reality, the rider have to focus on the riding, they can not change their power all the time, thus building a continuous model is not only very complex, but also unnecessary and unless. So we think it is only reasonable that we discretize the time in a race  it and use dynamic programming to analyze the power strategy in each period and find the best solution, and a proof of the reasonableness of this method will be given later.
 
-Then we are going to test our model on serval riders in a given TT(time trial) race. We need them to be various, we shall choose two different types of rider, time trial
+Then we are going to test our model on severval riders in a given TT(time trial) race. We need them to be various, we shall choose two different types of rider, time trial
 specialists and climbers, and we will define a male and a female for each of the two types of riders. To keep the data from getting out of line, we analyze the power curve
 from https://www.strava.com/pros following the following steps:
-First, we derive from our model that the equation of the curve should be exponential, which is $y=m*n^x+k$, and it fits the curve we acquired.
+we derive from our model that if the rider keeps the maximum power that he or she can give, a term in the polynomial of the power curve,  which simulate the influence of the stamina should be exponential,
+which is $m*n^x+k$, yet the influence of Lactic acid is liner, which is $l*x+k$, so the power curve should be in the form of $y=m*n^x+l*x+k$.
+and it fits the power curve we acquired of from the website.
 Then we fit all four riders' power curve to the equation, we get the value of $m,n,k$ for each rider. Accounting to our model, we found the relationship between these
 coefficients and our parameters and built the power profile of them.
 
@@ -135,22 +146,38 @@ First we shall define a few "volunteers" to test our model, we need them to be v
 specialists and climbers, and we will define a male and a female for each of the two types of riders. To keep the data from getting out of line, we will analyze the data of
 real pro riders. We should first find the source of that data and find a way to get the parameters we need in our model
 \subsubsection{Requirement 2}
-
-
+We need to show that our model can exactly work, thus we will apply it to including, at a minimum, the ones listed 
+below for each power profile you defined above: 
+\begin{itemize}
+    \item 2021 Olympic Time Trial course in Tokyo, Japan,
+    \item 2021 UCI World Championship time trial course in Flanders, Belgium,
+    \item At least one course of your own design that includes at least four sharp turns and
+    at least one nontrivial road grade. The end of the course should be near its start
+    point.
+\end{itemize}
+ Which require a map of the given course and the way to transfer it into a two-demensional matrix for out model to analyze. And for the course we designed there is another two requirements that we need to follow, we should find the definition and then
+ make our self-designed course in line with the rules. 
 \subsubsection{Requirement 3}
-
+ In the original model, we assume that the speed of wind is relatively negligible to the speed of the riders, to justify it, we will run sensitivity analysis to see how sensitive your results are for small differences in the weather
+ and environment.
 \subsubsection{Requirement 4}
-
+It is unlikely that a rider can follow a highly detailed plan and will miss the power targets which means he pr she might not be riding with the exact same power as we design before, we shall change the power in certain moments and see how much the 
+time will change. 
 \subsection{Requirement 5}
-
+Again we will try to improve our model, this time we will analyze the proper way of team work. The extended new model should be able to  include the optimal power use for a team time trial of six riders per team, where the team's time is 
+determined when the fourth rider crosses the finish line. Clearly, the two slowest member matter little, what's important is how the first three riders make a way for the forth while saving strength.
 \subsection{Requirement 6}
-
+Now with all those effect, we are finally able to give guidance for the riders, we should conclude from the results before a few rules for riders in two pages. 
 \section{Assumptions and Justification}
 
 To simplify the problem and make it convenient for us to simulate real-life conditions, we make the following basic assumptions, each of which is properly justified.
 
 \begin{itemize}
-    \item {\bf The change of speed is instant}
+    \item The riders don't have to worried about other features of the course except the distance and the slope when they try to find a proper pace.
+    \item No accident happen in the entire course that can disrupt the rider's pace.
+    \item The tire of the bicycle will not slip even the ground is wet.
+    \item The speed of wind is relatively negligible to the speed of the riders.
+    \item In the TT course, the riders will not be help to break the wind.
 
 \end{itemize}
 \section{Notations}
@@ -193,7 +220,8 @@ Here we measure the strength of riders by the power of the rider riding. Researc
 (Peter Leo,2021)\cite{leo2021power}(Andrea Zignoli, Francesco Biral,2020)\cite{zignoli2020prediction}
 has showed the Power-Durance(PD) relationship
 which can be described as the product of time and the difference between the power in this period and the critical power $CP$ is a constant value, which we
-denote as $R_0$,  thus we can  set restrictions  to simulate how fatigue will influence our riders in a race.
+denote as $R_0$, which will slowly recover, but can never exceed $R_O$, yet the decline of stamina, The effects of lactic acid accumulation hardly fade away in the race, instead it will accumulate at a fixed rate which we call the lactate effect rate
+denoted as $L$, with these model we can set restrictions  to simulate how fatigue will influence our riders in a race.
 \begin{equation}
     \left\{
     \begin{array}{c}
