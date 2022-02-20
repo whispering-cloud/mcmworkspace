@@ -1,28 +1,20 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% MCM/ICM LaTeX Template %%
-%% 2022 MCM/ICM           %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt]{article}
 \usepackage{geometry}
 \geometry{left=1in,right=0.75in,top=1in,bottom=1in}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Replace ABCDEF in the next line with your chosen problem
-% and replace 1111111 with your Team Control Number
 \newcommand{\Problem}{A}
 \newcommand{\Team}{2200655}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage{newtxtext}
 \usepackage{amsmath,amssymb,amsthm}
-\usepackage{newtxmath} % must come after amsXXX
-
+\usepackage{newtxmath}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{fancyhdr}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{float}
+\usepackage{subcaption}
 \usepackage{lipsum}
-\usepackage{svg}
 \usepackage{tabularx}
 \usepackage{epstopdf}
 \usepackage{mathrsfs}
@@ -30,6 +22,8 @@
 \usepackage{cite}
 \usepackage{makecell}
 \usepackage{diagbox}
+\usepackage{booktabs}
+\usepackage{svg}
 \lhead{Team \Team}
 \rhead{}
 \cfoot{}
@@ -39,9 +33,11 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{definition}{Definition}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
-\graphicspath{{./figure/}{../problem/data/athletes/}}  % Place your graphic files in the same directory as \includesvgg, .svg, .eps}
+\graphicspath{{./figure/}{../problem/data/raw/courses/2021 UCI World Championship time trial course in Flanders/}}
+\svgpath{{../problem/data/athletes/}}
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif, .png}
+
 \thispagestyle{empty}
 \vspace*{-16ex}
 \centerline{\begin{tabular}{*3{c}}
@@ -50,29 +46,25 @@
          & \parbox[t]{0.3\linewidth}{\begin{center}\textbf{Team Control Number}\\ \Large \textcolor{red}{\Team}\end{center}} \\
         \hline
     \end{tabular}}
+
 %%%%%%%%%%% Begin Summary %%%%%%%%%%%
-% Enter your summary here replacing the (red) text
-% Replace the text from here ...
+
 \begin{center}
+    \Large
+    \textbf{Storing the Sun:a Model for Off-grid Power System Design}
+\end{center}
+
+\begin{center}
+    \large
     \textbf{Summary}
 \end{center}
-In an individual time trial, each individual
-cyclist is expected to ride a fixed course alone, and the winner is the rider who does so in the
-least amount of time.
+In an individual time trial, each individual cyclist is expected to ride a fixed course alone, and the winner is the rider who does so in the least amount of time.
 
-Riders are always looking to minimize the time required to cover a given distance. Given a
-particular rider's capability according to that rider's power curve, how should that rider apply
-power while traversing a given time trial course?
-Our team aims to establish a model that can give the optimal plan for any particular rider, which tells them exactly when to accelerate,
-and when to slow down so that they can make the best of themselves. Firstly, we assume the air to be stationary and designed a mathematical model of movement
-in the race, and then we studied the power-duration models built by multiple articles(Mark Burnley \& Andrew M. Jones, 2016)\cite{doi:10.1080/17461391.2016.1249524}
-(Peter Leo,2021)\cite{leo2021power}(Andrea Zignoli, Francesco Biral,2020)\cite{zignoli2020prediction}, and found that all of them can be described as the product of time and the difference
-between the power in this period and the critical power $CP$ is a constant value, which we denote as $R_0$ ,thus we can  set restrictions  to simulate how fatigue
-will influence the riders in a race.
+Riders are always looking to minimize the time required to cover a given distance. Given a particular rider's capability according to that rider's power curve, how should that rider apply power while traversing a given time trial course?
 
-In reality, the rider have to focus on the riding, they can not change their power all the time, thus building a continuous model is not only very complex,
-but also unnecessary and unless. So we think it is only reasonable that we discretize the time in a race  it and use dynamic programming to analyze the power strategy in each
-period and find the best solution, and a proof of the reasonableness of this method will be given later.
+Our team aims to establish a model that can give the optimal plan for any particular rider, which tells them exactly when to accelerate, and when to slow down so that they can make the best of themselves. Firstly, we assume the air to be stationary and designed a mathematical model of movement in the race, and then we studied the power-duration models built by multiple articles(Mark Burnley \& Andrew M. Jones, 2016)\cite{doi:10.1080/17461391.2016.1249524} (Peter Leo,2021)\cite{leo2021power}(Andrea Zignoli, Francesco Biral,2020)\cite{zignoli2020prediction}, and found that all of them can be described as the product of time and the difference between the power in this period and the critical power $CP$ is a constant value, which we denote as $R_0$ ,thus we can  set restrictions  to simulate how fatigue will influence the riders in a race.
+
+In reality, the rider have to focus on the riding, they can not change their power all the time, thus building a continuous model is not only very complex, but also unnecessary and unless. So we think it is only reasonable that we discretize the time in a race  it and use dynamic programming to analyze the power strategy in each period and find the best solution, and a proof of the reasonableness of this method will be given later.
 
 Then we are going to test our model on serval riders in a given TT(time trial) race. We need them to be various, we shall choose two different types of rider, time trial
 specialists and climbers, and we will define a male and a female for each of the two types of riders. To keep the data from getting out of line, we analyze the power curve
@@ -89,32 +81,23 @@ wind, for the air friction is the main resistance, in stronger wind, which the s
 equation of air friction, and the riders' speed will drop considerably.
 
 Finally, we are able to  give a two-page detailed guide to the riders and their team.
-\begin{center}
-    \textbf{Keywords:}\Large Dynamic Programming, Power-duration model, Discretization
 
-\end{center}
-\textbf{Follow us @COMAPMath on Twitter or COMAPCHINAOFFICIAL on Weibo for the \newline
-    most up to date contest information.}
+\begin{flushleft}
+    \textbf{Keywords:} Dynamic Programming, Power-duration model, Discretization
+\end{flushleft}
 
 
-% to here
 %%%%%%%%%%% End Summary %%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \pagestyle{fancy}
-% Uncomment the next line to generate a Table of Contents
-%\tableofcontents 
+\tableofcontents
 \newpage
 \setcounter{page}{1}
 \rhead{Page \thepage\ }
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{Storing the Sun:a Model for Off-grid Power System Design}
-\Large
-\maketitle
-\tableofcontents   % 若不想要目录, 注释掉该句
-\newpage
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%% Begin Paper %%%%%%%%%%%
+
 \section{Introduction}
 \subsection{Background}
 
@@ -160,7 +143,7 @@ real pro riders. We should first find the source of that data and find a way to 
 
 \subsection{Requirement 5}
 
-\subsection{Requireemt 6}
+\subsection{Requirement 6}
 
 \section{Assumptions and Justification}
 
@@ -172,29 +155,32 @@ To simplify the problem and make it convenient for us to simulate real-life cond
 \end{itemize}
 \section{Notations}
 \begin{center}
-    \resizebox{\textwidth}{!}{
+    \resizebox{0.8\textwidth}{!}{
         \begin{tabular}{clc}
-            {\bf Symbols} & {\bf Description}                                       & \quad {\bf Unit}  \\[0.25cm]
-            $A$           & Frontal area                                            & \quad $m^2$       \\[0.25cm]
-            $E$           & Stamina-to-work conversion efficiency                   & \quad $J^{-1}$    \\[0.25cm]
-            $v$           & Velocity of the rider                                   & \quad $kW\cdot h$ \\[0.25cm]
-            $v_m$         & Velocity of the wind                                    & \quad $kW\cdot h$ \\[0.25cm]
-            $\eta $       & Transmission efficiency of the bike                     & \quad No units    \\[0.25cm]
-            $\rho $       & Density of the air                                      & \quad $kg/m^3$    \\[0.25cm]
-            $C_w$         & drag coefficient                                        & \quad No units    \\[0.25cm]
-            $C_r$         & coefficient of rolling friction                         & \quad No units    \\[0.25cm]
-            $F_r$         & Rolling friction resistance                             & \quad $N$         \\[0.25cm]
-            $F_w$         & Air friction                                            & \quad $N$         \\[0.25cm]
-            $F_s$         & The components of gravity in the direction of the slope & \quad $N$         \\[0.25cm]
-            $f$           & Resistance                                              & \quad $N$         \\[0.25cm]
-            $m$           & Number of types of lithium batteries                    & \quad No units    \\[0.25cm]
-            $\theta $     & Angle of a slope                                        & \quad rad         \\[0.25cm]
-            $M$           & Maximum  power of the rider                             & \quad $W$         \\[0.25cm]
-            $R$           & Stamina at the moment                                   & \quad No units    \\[0.25cm]
-            $CP$          & Recovery                                                & \quad $s^{-1}$    \\[0.25cm]
-            $R_0$         & Maximum Stamina                                         & \quad No unit     \\[0.25cm]
-            $P$           & Power of the rider                                      & \quad $W$         \\[0.25cm]
-            $L$           & lactate effect                                          & \quad $W$         \\[0.25cm]
+            \toprule
+            {\bf Symbols} & {\bf Description}                                       & {\bf Unit}  \\
+            \midrule
+            $A$           & Frontal area                                            & $m^2$       \\
+            $E$           & Stamina-to-work conversion efficiency                   & $J^{-1}$    \\
+            $v$           & Velocity of the rider                                   & $kW\cdot h$ \\
+            $v_m$         & Velocity of the wind                                    & $kW\cdot h$ \\
+            $\eta $       & Transmission efficiency of the bike                     & No units    \\
+            $\rho $       & Density of the air                                      & $kg/m^3$    \\
+            $C_w$         & drag coefficient                                        & No units    \\
+            $C_r$         & coefficient of rolling friction                         & No units    \\
+            $F_r$         & Rolling friction resistance                             & $N$         \\
+            $F_w$         & Air friction                                            & $N$         \\
+            $F_s$         & The components of gravity in the direction of the slope & $N$         \\
+            $f$           & Resistance                                              & $N$         \\
+            $m$           & Number of types of lithium batteries                    & No units    \\
+            $\theta $     & Angle of a slope                                        & rad         \\
+            $M$           & Maximum  power of the rider                             & $W$         \\
+            $R$           & Stamina at the moment                                   & No units    \\
+            $CP$          & Recovery                                                & $s^{-1}$    \\
+            $R_0$         & Maximum Stamina                                         & No unit     \\
+            $P$           & Power of the rider                                      & $W$         \\
+            $L$           & lactate effect                                          & $W$         \\
+            \bottomrule
         \end{tabular}
     }
 \end{center}
@@ -255,48 +241,14 @@ First, we derive from our model that if the rider keeps the maximum power that h
 which is $m*n^x+k$, yet the influence of Lactic acid is liner, which is $l*x+k$, so the power curve should be in the form of $y=m*n^x+l*x+k$.
 and it fits the curve we acquired.
 
-\begin{figure}
+\begin{figure}[H]
     \centering
-    \includegraphics[width=1\columnwidth]{Eddie Anderson}
-    \caption{Eddie Anderson's power curve}
-\end{figure}
-\begin{figure}[htbp]
-    \centering
-    \includesvg{Eddie Anderson}
-    \caption{Eddie Anderson's fitting curve}
-\end{figure}
+    \subcaptionbox*{Eddie Anderson's fitting curve}{\includesvg[width=.4\columnwidth]{"Eddie Anderson"}}
+    \subcaptionbox*{Jessica Allen's fitting curve}{\includesvg[width=.4\columnwidth]{"Jessica Allen"}}
 
-\begin{figure}
-    \centering
-    \includegraphics[width=1\columnwidth]{Jessica Allen}
-    \caption{Jessica Allen's power curve}
-\end{figure}
-\begin{figure}
-    \centering
-    \includesvg{Jessica Allen}
-    \caption{Jessica Allen's fitting curve}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=1\columnwidth]{Johannes Weber}
-    \caption{Johannes Weber's fitting curve}
-\end{figure}
-\begin{figure}
-    \centering
-    \includesvg[width=0.6\columnwidth]{Johannes Weber}
-    \caption{Johannes Weber's fitting curve}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=1\columnwidth]{eackerlund}
-    \caption{Erika Ackerlund's power curve}
-\end{figure}
-\begin{figure}
-    \centering
-    \includesvg{Erika Ackerlund}
-    \caption{Erika Ackerlund's fitting curve}
+    \subcaptionbox*{Johannes Weber's fitting curve}{\includesvg[width=.4\columnwidth]{"Johannes Weber"}}
+    \subcaptionbox*{Erika Ackerlund's fitting curve}{\includesvg[width=.4\columnwidth]{"Erika Ackerlund"}}
+    \caption{The fitting of the power curves of the chosen riders}
 \end{figure}
 Then we fit all four riders' power curve to the equation, we get the value of $m,n,k$ for each rider. Accounting to our model, the relationship between these coefficients
 and our parameters are:
@@ -327,32 +279,28 @@ However, there are also some disadvantages:
 \section{Requirement 2}
 Here we will apply our model to a time trial courses--the 2021 UCI World Championship time trial course in Flanders, Belgium,--for each power profile we defined
 above to prove that out model can be solved,the value of some parameter is show below:
-\begin{tabular}{|c |c|}\hline
-    \bf Parameters & \bf Values \\\hline
-    $C_r$          & 0.003      \\\hline
-    $m$            & 80         \\\hline
-    $g$            & 9.8        \\\hline
-    $\eta $        & 0.95       \\\hline
-    $\rho  $       & 1.2        \\\hline
-    $c_wA$         & 0.31       \\\hline
-\end{tabular}
-\begin{figure}
+\begin{table}[H]
     \centering
-    \includegraphics[width=1\columnwidth]{men-elite-individual-time-trial}
-    \caption{course profile(from https://www.flanders2021.com)}
-\end{figure}
+    \begin{tabular}{cc}
+        \toprule
+        \bf Parameters & \bf Values \\
+        \midrule
+        $C_r$          & 0.003      \\
+        $m$            & 80         \\
+        $g$            & 9.8        \\
+        $\eta $        & 0.95       \\
+        $\rho  $       & 1.2        \\
+        $c_wA$         & 0.31       \\
+        \bottomrule
+    \end{tabular}
+    \caption{Value of some parameters}
+\end{table}
 We first find the course profile from https://www.flanders2021.com
 then use the Reverse-Engineering Visualizations method developed by Jorge Poco1 and Jeffrey Heer in 2017\cite{poco2017reverse} to get the data we need about the racing track.
 \begin{figure}
     \centering
-    \includegraphics[width=1\columnwidth]{men-elite-individual-time-tria-map}
-    \caption{course profile(from https://www.flanders2021.com)}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[scale=1]{figure/men_elite_map}
-    \caption{men elite map}
+    \includegraphics[width=0.6\columnwidth]{men-elite-individual-time-trial-map}
+    \caption{course profile \& men elite map (from https://www.flanders2021.com)}
     \label{figure}
 \end{figure}
 
@@ -387,8 +335,10 @@ of nerves, and improves concentration, focus and performance.
 The routine gets you ready to compete, feeling comfortable you have done everything possible to reach the start line with the best preparation. The more you repeat and
 practice the routine, the more beneficial it is. I hope you have all remembered the instructions above, and it is ok if you didn't, you will remember them in a few routines.
 Now go!
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 \bibliographystyle{plain}
 \bibliography{2022_MCM_ICM_Report}
+%%%%%%%%%%% End Paper %%%%%%%%%%%
 \end{document}
 \end
