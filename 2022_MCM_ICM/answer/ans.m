@@ -5,7 +5,7 @@ plot(dist,da)
 
 [das] = window_smooth(da,7);
 
-plot(dist,das);
+%plot(dist,das);
 
 function [data_m] = window_smooth(data,n)
 %n为窗口长度
