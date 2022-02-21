@@ -8,10 +8,10 @@ plot(dist,da)
 %plot(dist,das);
 
 function [data_m] = window_smooth(data,n)
-%n为窗口长度
-L = length(data);%数据长度
+
+L = length(data);
  
-%均值滤波
+
 m = 0;
 k = 0;
 for i =1:L
