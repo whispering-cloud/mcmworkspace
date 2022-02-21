@@ -254,7 +254,7 @@ recovery minus the consumption.
 
 Given that we aim to guide our riders, it is obvious we can not give them very detailed instructions that ask them to change their velocity continuously, so we can treat the time
 as a collection of discrete time periods (here we set the length of the period to be 10s)to simplify this question and give a particle solution to guide our riders.
-Then we can describe how the three parameters of the rider (distance, velocity and stamina) change in a short period of time with a set of physic equations below: 
+Then we can describe how the three parameters of the rider (distance, velocity and stamina) change in a short period of time with a set of physic equations below:
 \begin{equation}
     func: \delta_p(s,p,v)=>(  s_p, r_p, v_p)=\left\{
     \begin{array}{c}
@@ -262,7 +262,7 @@ Then we can describe how the three parameters of the rider (distance, velocity a
         F_r=C_rmg                         \\%系数来源
         F_w=\rho C_w A(v-v_w)^2           \\%系数来源，暂时为零
         F_s=mg\sin \theta                 \\
-        \theta=\arctan\frac{d h}{d t}   \\%角度算法
+        \theta=\arctan\frac{d h}{d t}     \\%角度算法
         a=\frac{P-f\cdot v_0}{m\cdot v_0} \\
         v_p=a                             \\
         s_p=\frac{v_0+v}{2}               \\
@@ -271,15 +271,15 @@ Then we can describe how the three parameters of the rider (distance, velocity a
     \end{array}
     \right.
 \end{equation}
-In the first equation, the total friction is the sum of three parts the components of gravity, the rolling friction resistance and the air friction, 
+In the first equation, the total friction is the sum of three parts the components of gravity, the rolling friction resistance and the air friction,
 in the first two requirements we set the speed of the wind to be zero. To find the grade of the road, we differentiate the distance and give the grade with the equation
 $\theta=\arctan\frac{d h}{d t}$
-Since we had discretized the time in a race we can use dynamic programming to find the best solution, 
+Since we had discretized the time in a race we can use dynamic programming to find the best solution,
 and a proof of the reasonableness of this method will be given later.
 %除时间，体力与速度外的其他变量均不具有后效性
 %因为为有重叠子问题，可以用动态规划
 %连续变化：每段时间内功率变化不能过大
-To use the method of dynamic programming, we should first find the variables that has aftereffect, they are:  time ,stamina, and velocity. Together, these three variables 
+To use the method of dynamic programming, we should first find the variables that has aftereffect, they are:  time ,stamina, and velocity. Together, these three variables
 uniquely determine any state.
 The state transition equation of the dynamic programming is:\begin{equation}dp_{i+1,j+r_p,v+v_p}= max_{\max\{0,p_0-100\}}^{\min\{M\frac{j}{R}-Lt,p_0+100\}}\{dp_{i,j,v}+s_p\}\end{equation}
 
@@ -314,35 +314,21 @@ coefficients and our parameters and built the power profiles of them.
     \end{array}
     \right.
 \end{equation}
-In the end, we get the profile:
+In the end, we get the profile.
 \begin{figure}
     \centering
     \includegraphics[width=1\columnwidth]{Rider's profile.jpg}
     \caption{Rider's profile}
 \end{figure}
+According to the profile, the climbers has a faster recover rate, this match the common view. Climbers also have a great ability to recover between efforts they make on
+the mountain. This means that they can go into an anaerobic effort such as an attack and recover from it quickly in order to make another acceleration.
 
-After a few tests, we find the best power curve for each of the four riders, in the tests, we realized that
-our model has the following advantages:
-\begin{enumerate}
-    \item We discretized the race, thus we are able to use the dynamic programming method, which make sure we find the global optimal solution %应用了动态规划，能保证得到全局最优解
-    \item We improved our computing efficiency.%计算效率高
-    \item The model of P-D relationship is supported by multiple articles and the fitting is almost perfect.
-    \item The solution provided by the model is very effective, it greatly cut the time the riders need to finish the race.
-    \item The model can be applied to any type of battery of the same battery type.
-\end{enumerate}
-However, there are also some disadvantages that we can not ignore:
-\begin{enumerate}
-    \item The influence between the riders were not taken into account, in a real race the rider will try to grab a vantage point, which may force some riders to 
-    slow down. What's more, they will disrupt the airflow, which will change the air friction.%忽略了运动员之间的影响
-    \item We didn't consider that the models of movement will be different from the one on the straight road, in our model, the rider was like riding on a straight path 
-    all the time 
-    .%规划策略可能不易实行
-    \item Even though we have discretized the race, our model' instructions are still too ideal, the riders will still have to change their power constantly, which is 
-    almost impossible in any race. %没有考虑转弯
-\end{enumerate}
-\section{Requirement 2}
+The TT specialist, in the other hand has a higher Stamina-to-work conversion efficiency, which helps them to sustain a higher power for a longer time, it is a great advantage
+in a TT race.
+
+\section{Requirement 2:test}
 Here we will apply our model to a time trial courses--the 2021 UCI World Championship time trial course in Flanders, Belgium --for each power profile we defined
-above to prove that out model can be solved,the value of some parameter is show below:
+above to prove that out model can be solved, the value of some parameter is show below:
 \begin{table}[H]
     \centering
     \begin{tabular}{cc}
@@ -357,11 +343,11 @@ above to prove that out model can be solved,the value of some parameter is show 
         $c_wA$         & 0.31       \\
         \bottomrule
     \end{tabular}
-    \caption{Value of some parameters}
+    \caption{Value of some parameters, from https://www.sheldonbrown.com/rinard/aero/formulas.html}
 \end{table}
-We first find the course profile- the route map and the topographic map of the course-from https://www.flanders2021.com
+We first find the course profile--the route map and the topographic map of the course-from https://www.flanders2021.com
 then use the Reverse-Engineering Visualizations method developed by Jorge Poco1 and Jeffrey Heer in 2017\cite{poco2017reverse} to get the data we need about the racing track,
-which is two two-dimensional matrix, we plot the two matrix to demonstrate them.
+which is two two-dimensional matrices, we plot the two matrix to demonstrate them.
 
 \begin{figure}[H]
     \centering
@@ -373,9 +359,51 @@ which is two two-dimensional matrix, we plot the two matrix to demonstrate them.
     \subcaptionbox*{men elite topographic map matrix demo}{\includegraphics[width=1\columnwidth]{men-elite-individual-time-trial-profile-matrix demo}}
     \caption{Course's map}
 \end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \subcaptionbox*{Eddie Anderson's power curve}{\includesvg[width=.4\columnwidth]{"csi4"}}
+    \subcaptionbox*{Jessica Allen's power curve}{\includesvg[width=.4\columnwidth]{"csi3"}}
+
+    \subcaptionbox*{Johannes Weber's power curve}{\includesvg[width=.4\columnwidth]{"csi2"}}
+    \subcaptionbox*{Eva Buchholz's power curve}{\includesvg[width=.4\columnwidth]{"csi1"}}
+    \caption {power curves of the chosen riders}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \subcaptionbox*{self designed route map matrix demo}{\includegraphics[width=.4\columnwidth]{self-designed_map_matrix_demo}}
+    \subcaptionbox*{self designed topographic map matrix demo}{\includesvg[width=.6\columnwidth]{triangle}}
+    \caption{Self-designed map}
+\end{figure}
+\begin{figure}
+    \centering
+    \includesvg[width=1\columnwidth]{"squ3s15"}
+    \caption{Jessica Allen's power curve in the self-designed map}
+\end{figure}
+After a few tests, we find the best power curve for each of the four riders, in the tests, we realized that
+our model has the following advantages:
+\begin{enumerate}
+    \item We discretized the race, thus we are able to use the dynamic programming method, which make sure we find the global optimal solution %应用了动态规划，能保证得到全局最优解
+    \item We improved our computing efficiency.%计算效率高
+    \item The model of P-D relationship is supported by multiple articles and the fitting is almost perfect.
+    \item The solution provided by the model is very effective, it greatly cut the time the riders need to finish the race.
+    \item The model can be applied to any type of battery of the same battery type.
+\end{enumerate}
+However, there are also some disadvantages that we can not ignore:
+\begin{enumerate}
+    \item The influence between the riders were not taken into account, in a real race the rider will try to grab a vantage point, which may force some riders to
+          slow down. What's more, they will disrupt the airflow, which will change the air friction.%忽略了运动员之间的影响
+    \item We didn't consider that the models of movement will be different from the one on the straight road, in our model, the rider was like riding on a straight path
+          all the time
+          .%规划策略可能不易实行
+    \item Even though we have discretized the race, our model' instructions are still too ideal, the riders will still have to change their power constantly, which is
+          almost impossible in any race. %没有考虑转弯
+\end{enumerate}
 \section{Requirement 3}
 In the first two requirements, the speed of wind($v_m$) is always zero, and it will result in a decrease in simulation accuracy.
-Now we take the influence of the wind into account,  $v_m$, which means the speed of wind, will be given a constant value, but its direction will change, the 
+Now we take the influence of the wind into account,  $v_m$, which means the speed of wind, will be given a constant value, but its direction will change, the
 to test the sensitivity of the model, if the change of the time needed to finish the race will not vary significantly the sensitivity of our model
 is considered low, after another few tests, the result is shown below.
 \begin{figure}
@@ -383,17 +411,25 @@ is considered low, after another few tests, the result is shown below.
     \includesvg[width=1\columnwidth]{"radar"}
     \caption{Sensitive Alynasis}
 \end{figure}
-When the wind speed is set at 10$m/s$ the influence is relatively small-the maximum difference is just over 100s, which is negligible when compare to the total time of 
-near an hour. The result is thrilling, for it means that our we don't have to predict the future weather when we try to find the best solution for the race.
+When the wind speed is set at 10$m/s$ the influence is relatively small-the maximum difference is just over 100s, which is negligible when compare to the total time of
+near an hour. The result is thrilling, for it means that our model is not very sensitive to the change of the weather, windy or not, the model tends to give similar--and
+equally useful--guidance. Which means we don't have to predict the future weather when we try to find the best solution for the race, and it makes to model more trustworthy.
 \section{Requirement 4}
+As mentioned before, the guidance given by our current model is too detailed and ideal, thus we are concerned that whether the model will be impractical if the rider can't
+follow the instructions. In this section, we will try to find a way to simulate the influence of missing the power target. Here we will use the sliding window algorithm which
+has a window of 7, meaning that the value of the note will be reassigned to the mean value of three values on both sides and itself. This algorithm will make the curve smooth
+,which is closer to reality.
 \begin{figure}
     \centering
     \includesvg[width=1\columnwidth]{"smoothed"}
     \caption{Smooth power curve}
 \end{figure}
 \section{Requirement 5}
+Again we will try to improve our model, this time we will analyze the proper way of team work. The extended new model should be able to  include the optimal power use for a team time trial of six riders per team, where the team's time is
+determined when the fourth rider crosses the finish line. Clearly, the two slowest member matter little, what's important is how the first three riders should help the forth.
 
-
+To find a way to analyze the influence of the teammates, we need a model of the windbreakers, which described how the air friction will change according to the relative
+position of the teammembers.
 \newpage
 \section{Requirement 6}
 \begin{center}
@@ -410,6 +446,11 @@ became extremely  important to keep a reasonable pace, and this guidance aims to
 Recently a new model has been developed to find the best racing strategy for each rider, from your trainings and races in the past, it was able to quantificat your ability
 like stamina, recovery, critical power and maximum power the model will show you when to slow down and when to speed up, with a proper pace you will be able to ride
 fast and easy.
+
+So here are the general suggestion of the model:
+\begin{enumerate}
+    \item Always keeps a steady pace, in the %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{enumerate}
 
 A pre-performance routine means your attention stays in the present and only on elements that are task-relevant. It helps reduce anxiety, gets you to your optimal level
 of nerves, and improves concentration, focus and performance.
