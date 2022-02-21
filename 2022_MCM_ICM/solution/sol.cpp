@@ -16,15 +16,35 @@ struct status
 
 const double c_r = 0.003, g = 9.8, eta = 0.95, rho = 1.2, c_wA = 0.31;
 const int m = 80, R = 1000;
-
+double rx[10001], ry[10001];
 double h[10001], v_w[10000];
+double wind_theta, wind_vel;
 double M, E, CP, LT;
 int cnt, total_time;
 int dp[1461][1001][301], ansp[1460], anss[1460];
 
 status result;
 vector<status> pre[1001][301];
-
+void wind()
+{
+	freopen("ICM_MCM/men-elite-map_data.txt", "r", stdin);
+	for (int i = 0; i < cnt; i++)
+	{
+		cin >> rx[i] >> ry[i];
+	}
+	freopen("CON", "r", stdin);
+	// cin >> wind_theta >> wind_vel;
+	int xiangxian;
+	cout << "Input 0~7 vec";
+	cin >> xiangxian;
+	wind_theta = 3.1415 * xiangxian / 4;
+	wind_vel = 0.1;
+	for (int i = 0; i < cnt - 1; i++)
+	{
+		v_w[i] = wind_vel * cos(atan2((ry[i + 1] - ry[i]), (rx[i + 1] - rx[i])) - wind_theta);
+	}
+	cout << "wind prepared";
+}
 status delta(int s, int p, int v)
 {
 	status res;
@@ -135,8 +155,8 @@ void path()
 		k = tk;
 	}
 }
-// 1th 281.73 6.31 18.56 0.03
-// 2th 909.50 5.58 53.89 0.12 
+// 1th 481.73 6.31 18.56 0.03
+// 2th 909.50 5.58 53.89 0.12
 // 3th 637.3 35.3 4.7 0.20
 // 4th 467.27 9.39 11.51 0.07
 int main()
@@ -151,10 +171,11 @@ int main()
 		h[cnt] = h[cnt - 1];
 	}
 	cout << "Input cyclers' M E CP LT: " << endl;
-	M = 481.73;
-	E = 6.31;
-	CP = 18.56;
-	LT = 0.03;
+	M = 909.50;
+	E = 5.58;
+	CP = 53.89;
+	LT = 0.12;
+	wind();
 	// cin >> M >> E >> CP >> LT;
 	// cout << delta(0, 160, 1).ds<<" "<<delta(0,160,1).dv;
 	total_time = solve();
@@ -165,5 +186,6 @@ int main()
 	cout << endl;
 	for (int i = 0; i < total_time - 1; i++)
 		cout << anss[i] << ' ';
+
 	return 0;
 }
