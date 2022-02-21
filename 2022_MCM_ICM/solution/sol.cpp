@@ -135,8 +135,10 @@ void path()
 		k = tk;
 	}
 }
-// 3th 637.3 35.3 4.7 -0.2
-// 160.65 1.45 0.38 0.24
+// 1th 160.65 1.45 0.38 -0.24
+// 2th 909.50 5.58 53.89 0.12 
+// 3th 637.3 35.3 4.7 0.20
+// 4th 467.27 9.39 11.51 0.07
 int main()
 {
 	string terrain_src_path;
@@ -149,10 +151,10 @@ int main()
 		h[cnt] = h[cnt - 1];
 	}
 	cout << "Input cyclers' M E CP LT: " << endl;
-	M = 637.3;
-	E = 35.3;
-	CP = 4.7;
-	LT = -0.2;
+	M = 160.65;
+	E = 1.45;
+	CP = 0.38;
+	LT = -0.24;
 	// cin >> M >> E >> CP >> LT;
 	// cout << delta(0, 160, 1).ds<<" "<<delta(0,160,1).dv;
 	total_time = solve();
