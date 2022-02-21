@@ -149,10 +149,10 @@ int antisolve()
 	{
 		double tmpp;
 		cin >> tmpp;
-		status redel = delta(antis % cnt, (int) tmpp, v);
+		status redel = delta(antis % cnt, (int)tmpp + 1, v);
 		antis += redel.ds;
 		v += redel.dv;
-		v = max(v, 10);
+		v = max(v, 20);
 	}
 	return antis;
 }
@@ -173,45 +173,6 @@ void path()
 
 int main()
 {
-<<<<<<< HEAD
-	string terrain_src_path;
-	cout << "choose people 0~3:\n";
-	int pe;
-	cin >> pe;
-	cout << "Input source of terrain data: " << endl;
-	// terrain_src_path = "ICM_MCM/men-elite_data.txt";
-	terrain_src_path = "ICM_MCM/square_data.txt";
-	{
-		ifstream terrain(terrain_src_path.data());
-		double tmpter;
-		int counter = 0;
-		while (terrain >> tmpter)
-		{
-			counter++;
-			if (counter >= 4)
-			{
-				h[cnt++] = tmpter * 0.1;
-				counter = 0;
-			}
-		}
-		h[cnt] = h[cnt - 1];
-	}
-	
-	/*for (int i = 0; i < cnt; i++)
-	{
-		cout << h[i] << ' ';
-	}*/
-	cout << "Input cyclers' M E CP LT: " << endl;
-	M = peo[pe][0];
-	E = peo[pe][1];
-	CP = peo[pe][2];
-	LT = peo[pe][3];
-	// wind();
-	//  cin >> M >> E >> CP >> LT;
-	//  cout << delta(0, 160, 1).ds<<" "<<delta(0,160,1).dv;
-	/*total_time = solve();
-	cout << "Found: " << total_time << endl;
-=======
 	int athlete_id;
 	cout << "Choose athlete_id(0~3): ";
 	cin >> athlete_id;
@@ -228,6 +189,7 @@ int main()
 		h[cnt] = h[cnt - 1];
 		cout << "Done!" << endl;
 	}
+	antisolve();
 	if (enable_wind)
 		wind();
 	total_time = solve();
@@ -236,14 +198,13 @@ int main()
 		cout << "Found! Total time: " << total_time << endl;
 	else
 		cout << "Not Found!" << endl;
->>>>>>> 016baa2 (Update: 2022_MCM_ICM/solution/sol.cpp)
 	path();
 	for (int i = 0; i < total_time - 1; i++)
 		cout << ansp[i] << ' ';
 	cout << endl;
 	for (int i = 0; i < total_time - 1; i++)
 		cout << anss[i] << ' ';
-	*/
+	
 	cout << antisolve();
 
 	return 0;
