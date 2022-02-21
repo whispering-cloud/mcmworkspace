@@ -159,25 +159,37 @@ void path()
 // 2th 909.50 5.58 53.89 0.12
 // 3th 637.3 35.3 4.7 0.20
 // 4th 467.27 9.39 11.51 0.07
+double peo[5][5] = {{481.73, 6.31, 18.56, 0.03}, {909.50, 5.58, 53.89, 0.12}, {637.3, 35.3, 4.7, 0.20}, {467.27, 9.39, 11.51, 0.07}};
 int main()
 {
 	string terrain_src_path;
+	cout << "choose people 0~3:\n";
+	int pe;
+	cin >> pe;
 	cout << "Input source of terrain data: " << endl;
-	terrain_src_path = "ICM_MCM/men-elite_data.txt";
+	// terrain_src_path = "ICM_MCM/men-elite_data.txt";
+	terrain_src_path = "ICM_MCM/square_data.txt";
 	{
 		ifstream terrain(terrain_src_path.data());
-		while (terrain >> h[cnt++])
-			h[cnt - 1] *= 1;
+		double tmpter;
+		int counter = 0;
+		while (terrain>>tmpter){
+			counter++;
+			if(counter>=4){
+				h[cnt++] = tmpter * 0.1;
+				counter = 0;
+			}
+		}
 		h[cnt] = h[cnt - 1];
 	}
 	cout << "Input cyclers' M E CP LT: " << endl;
-	M = 909.50;
-	E = 5.58;
-	CP = 53.89;
-	LT = 0.12;
-	wind();
-	// cin >> M >> E >> CP >> LT;
-	// cout << delta(0, 160, 1).ds<<" "<<delta(0,160,1).dv;
+	M = peo[pe][0];
+	E = peo[pe][1];
+	CP = peo[pe][2];
+	LT = peo[pe][3];
+	// wind();
+	//  cin >> M >> E >> CP >> LT;
+	//  cout << delta(0, 160, 1).ds<<" "<<delta(0,160,1).dv;
 	total_time = solve();
 	cout << "Found: " << total_time << endl;
 	path();
