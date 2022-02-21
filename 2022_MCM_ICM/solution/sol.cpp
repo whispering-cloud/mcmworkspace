@@ -141,6 +141,22 @@ int solve()
 
 	return -1;
 }
+int antisolve()
+{
+	int timei;
+	cin >> timei;
+	int antis = 0, v = 10;
+	for (int i = 0; i < timei; i++)
+	{
+		double tmpp;
+		cin >> tmpp;
+		status redel = delta(antis % cnt, (int) tmpp, v);
+		antis += redel.ds;
+		v += redel.dv;
+		v = max(v, 10);
+	}
+	return antis;
+}
 //
 void path()
 {
@@ -184,10 +200,11 @@ int main()
 		}
 		h[cnt] = h[cnt - 1];
 	}
-	for (int i = 0; i < cnt; i++)
+	
+	/*for (int i = 0; i < cnt; i++)
 	{
 		cout << h[i] << ' ';
-	}
+	}*/
 	cout << "Input cyclers' M E CP LT: " << endl;
 	M = peo[pe][0];
 	E = peo[pe][1];
@@ -196,7 +213,7 @@ int main()
 	// wind();
 	//  cin >> M >> E >> CP >> LT;
 	//  cout << delta(0, 160, 1).ds<<" "<<delta(0,160,1).dv;
-	total_time = solve();
+	/*total_time = solve();
 	cout << "Found: " << total_time << endl;
 	path();
 	for (int i = 0; i < total_time - 1; i++)
@@ -204,6 +221,8 @@ int main()
 	cout << endl;
 	for (int i = 0; i < total_time - 1; i++)
 		cout << anss[i] << ' ';
+	*/
+	cout << antisolve();
 
 	return 0;
 }
