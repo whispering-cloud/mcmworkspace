@@ -38,7 +38,7 @@ void wind()
 	cout << "Input 0~7 vec";
 	cin >> xiangxian;
 	wind_theta = 3.1415 * xiangxian / 4;
-	wind_vel = 0.1;
+	wind_vel = 10; // 0.1
 	for (int i = 0; i < cnt - 1; i++)
 	{
 		v_w[i] = wind_vel * cos(atan2((ry[i + 1] - ry[i]), (rx[i + 1] - rx[i])) - wind_theta);
@@ -173,14 +173,20 @@ int main()
 		ifstream terrain(terrain_src_path.data());
 		double tmpter;
 		int counter = 0;
-		while (terrain>>tmpter){
+		while (terrain >> tmpter)
+		{
 			counter++;
-			if(counter>=4){
+			if (counter >= 4)
+			{
 				h[cnt++] = tmpter * 0.1;
 				counter = 0;
 			}
 		}
 		h[cnt] = h[cnt - 1];
+	}
+	for (int i = 0; i < cnt; i++)
+	{
+		cout << h[i] << ' ';
 	}
 	cout << "Input cyclers' M E CP LT: " << endl;
 	M = peo[pe][0];
