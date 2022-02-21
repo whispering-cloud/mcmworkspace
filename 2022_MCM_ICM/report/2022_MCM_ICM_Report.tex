@@ -35,7 +35,7 @@
 
 \begin{document}
 \graphicspath{{./figure/}{../problem/data/raw/courses/2021 UCI World Championship time trial course in Flanders/}}
-\svgpath{{../problem/data/athletes/}{../answer/answer_graph}}
+\svgpath{{../problem/data/athletes/}{../solution/answer/answer_graph/}}
 \DeclareGraphicsExtensions{.pdf, .jpg, .tif, .png}
 
 \thispagestyle{empty}
@@ -77,11 +77,11 @@ in the race, instead, it will accumulate at a fixed rate which we call the lacta
 to simulate how fatigue will influence our riders in a race.
 
 In reality, the riders have to focus on the riding, they can not change their power all the time, thus building a continuous model is not only very complex, but also unnecessary and impractical.
-So we think it is only reasonable that we discretize the time in a race  it and use dynamic programming to analyze the power strategy in each period and find the best solution. And a proof of 
+So we think it is only reasonable that we discretize the time in a race  it and use dynamic programming to analyze the power strategy in each period and find the best solution. And a proof of
 the reasonableness of this method will be given later.
 
 Then we are going to test our model on several riders in a given TT(time trial) course and a course of our own design. We need them to be various, so we choose two different types of riders, time trial
-specialists and climbers, and we will define a male and a female who has the typical features of their type for each of the two types of riders. 
+specialists and climbers, and we will define a male and a female who has the typical features of their type for each of the two types of riders.
 To keep the data from getting out of line, we analyze the power curve
 from https://www.strava.com/pros following the following steps:
 we derive from our model that if the rider keeps the maximum power that he or she can give, a term in the polynomial of the power curve,  which simulate the influence of the stamina should be exponential,
@@ -100,7 +100,7 @@ wind, for the air friction is the main resistance. In stronger wind, which the s
 and the riders' speed will drop considerably.
 
 What's more our model' instructions are still too ideal, the riders will still have to change their power constantly, so we will use the slip window algorithm to make the curve
-smoother, which means less frequent instructions. 
+smoother, which means less frequent instructions.
 
 Finally, we are able to  give a two-page detailed guide to the riders and their team.
 
@@ -205,8 +205,8 @@ To simplify the problem and make it convenient for us to simulate real-life cond
             $v_m$         & Velocity of the wind                                    & $kW/h$        \\
             $\eta $       & Transmission efficiency of the bike                     & Dimensionless \\
             $\rho $       & Density of the air                                      & $kg/m^3$      \\
-            $C_w$         & drag coefficient                                        & Dimensionless \\
-            $C_r$         & coefficient of rolling friction                         & Dimensionless \\
+            $C_w$         & Aerodynamic drag factor                                 & Dimensionless \\
+            $C_r$         & Coefficient of rolling friction                         & Dimensionless \\
             $F_r$         & Rolling friction resistance                             & $N$           \\
             $F_w$         & Air friction                                            & $N$           \\
             $F_s$         & The components of gravity in the direction of the slope & $N$           \\
@@ -249,12 +249,12 @@ to simulate how fatigue will influence our riders in a race.
 \end{equation}
 
 The first restriction indicates that fatigue will slow down the rider, the lower the stamina and the more the lactic acid accumulate, the less power a rider can give.
-The second and third restriction showed changes of stamina, in the third equation,$\frac{d R}{d t}$means the change of the stamina in a short period, which equals to the 
+The second and third restriction showed changes of stamina, in the third equation,$\frac{d R}{d t}$means the change of the stamina in a short period, which equals to the
 recovery minus the consumption.
 
 Given that we aim to guide our riders, it is obvious we can not give them very detailed instructions that ask them to change their velocity continuously, so we can treat the time
 as a collection of discrete time periods (here we set the length of the period to be 10s)to simplify this question and give a particle solution to guide our riders.
-Then we can describe how the three parameters of the rider (distance, velocity and stamina) change in a short period of time with a set of physic equations below:
+Then we can describe how the three parameters of the rider (distance, velocity and stamina) change in a short period of time with a set of physic equations below: 
 \begin{equation}
     func: \delta_p(s,p,v)=>(  s_p, r_p, v_p)=\left\{
     \begin{array}{c}
@@ -262,7 +262,7 @@ Then we can describe how the three parameters of the rider (distance, velocity a
         F_r=C_rmg                         \\%系数来源
         F_w=\rho C_w A(v-v_w)^2           \\%系数来源，暂时为零
         F_s=mg\sin \theta                 \\
-        \theta=mg\arctan\frac{d h}{d t}   \\%角度算法
+        \theta=\arctan\frac{d h}{d t}   \\%角度算法
         a=\frac{P-f\cdot v_0}{m\cdot v_0} \\
         v_p=a                             \\
         s_p=\frac{v_0+v}{2}               \\
@@ -271,12 +271,16 @@ Then we can describe how the three parameters of the rider (distance, velocity a
     \end{array}
     \right.
 \end{equation}
-
-Since we had discretized the time in a race we can use dynamic programming to find the best solution,
+In the first equation, the total friction is the sum of three parts the components of gravity, the rolling friction resistance and the air friction, 
+in the first two requirements we set the speed of the wind to be zero. To find the grade of the road, we differentiate the distance and give the grade with the equation
+$\theta=\arctan\frac{d h}{d t}$
+Since we had discretized the time in a race we can use dynamic programming to find the best solution, 
 and a proof of the reasonableness of this method will be given later.
 %除时间，体力与速度外的其他变量均不具有后效性
 %因为为有重叠子问题，可以用动态规划
 %连续变化：每段时间内功率变化不能过大
+To use the method of dynamic programming, we should first find the variables that has aftereffect, they are:  time ,stamina, and velocity. Together, these three variables 
+uniquely determine any state.
 The state transition equation of the dynamic programming is:\begin{equation}dp_{i+1,j+r_p,v+v_p}= max_{\max\{0,p_0-100\}}^{\min\{M\frac{j}{R}-Lt,p_0+100\}}\{dp_{i,j,v}+s_p\}\end{equation}
 
 In the $dp_{i,j,v}$ means the maximum distance the rider can go when time is $i$, stamina is $j$ and velocity is $v$, and the boundary condition is $dp_{i,j,v}\geqslant S_0$
@@ -298,8 +302,9 @@ and it fits the curve we acquired.
     \subcaptionbox*{Eva Buchholz's fitting curve}{\includesvg[width=.4\columnwidth]{"Eva Buchholz"}}
     \caption{The fitting of the power curves of the chosen riders}
 \end{figure}
-Then we fit all four riders' power curve to the equation, we get the value of $m,n,k$ for each rider. Accounting to our model, the relationship between these coefficients
-and our parameters are:
+Then we used the least square method to fit the equation to all four riders' power curve and  %拟合的表达
+got the value of $m,n,k,l$ for each rider. According to our model, we found the relationship between these
+coefficients and our parameters and built the power profiles of them.
 \begin{equation}
     \left\{
     \begin{array}{c}
@@ -309,29 +314,34 @@ and our parameters are:
     \end{array}
     \right.
 \end{equation}
- In the end, we get the profile:
- \begin{figure}
-     \centering
-     \includegraphics[width=1\columnwidth]{Rider's profile.jpg}
-     \caption{Rider's profile}
- \end{figure}
-Then, for we can set $R$ to any proper number, here we set it to 1000. So we get a file of the riders.%此处应有表
-Our model has the following advantages:
+In the end, we get the profile:
+\begin{figure}
+    \centering
+    \includegraphics[width=1\columnwidth]{Rider's profile.jpg}
+    \caption{Rider's profile}
+\end{figure}
+
+After a few tests, we find the best power curve for each of the four riders, in the tests, we realized that
+our model has the following advantages:
 \begin{enumerate}
-    \item The conversion efficiency and battery cost are considered together.%应用了动态规划，能保证得到全局最优解
-    \item High power electrical appliances such as hairdryers are considered, so the stability is high.%计算效率高
-    \item The model automatically selects whether to use lithium batteries only.
-    \item Constant replenishment of replaceable batteries keeps its power stable.
+    \item We discretized the race, thus we are able to use the dynamic programming method, which make sure we find the global optimal solution %应用了动态规划，能保证得到全局最优解
+    \item We improved our computing efficiency.%计算效率高
+    \item The model of P-D relationship is supported by multiple articles and the fitting is almost perfect.
+    \item The solution provided by the model is very effective, it greatly cut the time the riders need to finish the race.
     \item The model can be applied to any type of battery of the same battery type.
 \end{enumerate}
-However, there are also some disadvantages:
+However, there are also some disadvantages that we can not ignore:
 \begin{enumerate}
-    \item No account is taken of battery size and weight.%忽略了运动员之间的影响
-    \item No account is taken of different types of lithium battery life.%规划策略可能不易实行
-    \item No account is taken of the change in the number of replaceable batteries caused by different seasons%没有考虑转弯
+    \item The influence between the riders were not taken into account, in a real race the rider will try to grab a vantage point, which may force some riders to 
+    slow down. What's more, they will disrupt the airflow, which will change the air friction.%忽略了运动员之间的影响
+    \item We didn't consider that the models of movement will be different from the one on the straight road, in our model, the rider was like riding on a straight path 
+    all the time 
+    .%规划策略可能不易实行
+    \item Even though we have discretized the race, our model' instructions are still too ideal, the riders will still have to change their power constantly, which is 
+    almost impossible in any race. %没有考虑转弯
 \end{enumerate}
 \section{Requirement 2}
-Here we will apply our model to a time trial courses--the 2021 UCI World Championship time trial course in Flanders, Belgium,--for each power profile we defined
+Here we will apply our model to a time trial courses--the 2021 UCI World Championship time trial course in Flanders, Belgium --for each power profile we defined
 above to prove that out model can be solved,the value of some parameter is show below:
 \begin{table}[H]
     \centering
@@ -364,10 +374,23 @@ which is two two-dimensional matrix, we plot the two matrix to demonstrate them.
     \caption{Course's map}
 \end{figure}
 \section{Requirement 3}
-Now we take the influence of the wind into account, we will take $v_m$, which means the speed of wind, into account to simulate the influence of the weather.
-\section{Requirement4}
-
-
+In the first two requirements, the speed of wind($v_m$) is always zero, and it will result in a decrease in simulation accuracy.
+Now we take the influence of the wind into account,  $v_m$, which means the speed of wind, will be given a constant value, but its direction will change, the 
+to test the sensitivity of the model, if the change of the time needed to finish the race will not vary significantly the sensitivity of our model
+is considered low, after another few tests, the result is shown below.
+\begin{figure}
+    \centering
+    \includesvg[width=1\columnwidth]{"radar"}
+    \caption{Sensitive Alynasis}
+\end{figure}
+When the wind speed is set at 10$m/s$ the influence is relatively small-the maximum difference is just over 100s, which is negligible when compare to the total time of 
+near an hour. The result is thrilling, for it means that our we don't have to predict the future weather when we try to find the best solution for the race.
+\section{Requirement 4}
+\begin{figure}
+    \centering
+    \includesvg[width=1\columnwidth]{"smoothed"}
+    \caption{Smooth power curve}
+\end{figure}
 \section{Requirement 5}
 
 
