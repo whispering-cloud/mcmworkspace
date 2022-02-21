@@ -1,12 +1,21 @@
 #include <algorithm>
 #include <cmath>
-#include <cstdio>
-#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
+
 using namespace std;
+
+const string map_perfix="../problem/data/";
+const string map_name = "men-elite";
+const bool enable_wind = false;
+
+const double athlete_data[4][4] = {
+	{481.73, 6.31, 18.56, 0.03},
+	{909.50, 5.58, 53.89, 0.12},
+	{637.3, 35.3, 4.7, 0.20},
+	{467.27, 9.39, 11.51, 0.07}};
 
 struct status
 {
@@ -25,27 +34,28 @@ int dp[1461][1001][301], ansp[1460], anss[1460];
 
 status result;
 vector<status> pre[1001][301];
-void wind()
+
+inline void wind()
 {
-	freopen("ICM_MCM/men-elite-map_data.txt", "r", stdin);
-	for (int i = 0; i < cnt; i++)
+	cout << "Asserting the wind status, reading the map data..." << endl;
 	{
-		cin >> rx[i] >> ry[i];
+		ifstream map_data(map_perfix + map_name + "-map_data.txt");
+		for (int i = 0; i < cnt; i++)
+			map_data >> rx[i] >> ry[i];
 	}
-	freopen("CON", "r", stdin);
-	// cin >> wind_theta >> wind_vel;
-	int xiangxian;
-	cout << "Input 0~7 vec";
-	cin >> xiangxian;
-	wind_theta = 3.1415 * xiangxian / 4;
+	int vec;
+	cout << "Input 0~7 vec: ";
+	cin >> vec;
+	wind_theta = 3.1415 * vec / 4;
 	wind_vel = 10; // 0.1
 	for (int i = 0; i < cnt - 1; i++)
 	{
 		v_w[i] = wind_vel * cos(atan2((ry[i + 1] - ry[i]), (rx[i + 1] - rx[i])) - wind_theta);
 	}
-	cout << "wind prepared";
+	cout << "Wind prepared!" << endl;
 }
-status delta(int s, int p, int v)
+
+inline status delta(int s, int p, int v)
 {
 	status res;
 	if (v / 10 * m == 0)
@@ -59,8 +69,8 @@ status delta(int s, int p, int v)
 	res.dr = 10 * (CP - double(p) / E);
 	return res;
 }
-// 161.65 1.45 0.038 0.24
-int solve()
+
+inline int solve()
 {
 	status del;
 
@@ -81,16 +91,15 @@ int solve()
 			dp[1][tmpr][tmpv] = tmps;
 			while (pre[tmpr][tmpv].size() <= 1)
 				pre[tmpr][tmpv].push_back({-1, -1, -1, -1});
-			pre[tmpr][tmpv][1] = {1000, 0, 1, p};
+			pre[tmpr][tmpv][1] = {1000, 0, 10, p};
 		}
 	}
 
+	cout << 0;
 	for (int i = 1; i < 1460; i++)
 	{
-		bool testflag = false;
-
 		if (i % 10 == 0)
-			cout << i << endl;
+			cout << "\r" << i;
 		for (int j = 1000; j >= 0; j--)
 			for (int k = 0; k <= 300; k++)
 			{
@@ -106,16 +115,11 @@ int solve()
 				int pmax = M * j / 1000 - LT * i;
 				int prep = pre[j][k][i].power;
 				if (prep - 100 > pmax)
-				{
 					prep = 1;
-				}
 				else
-				{
 					prep = max(1, prep - 100);
-				}
-				for (int p = prep; p <= min(prep + 200, pmax); p += 10)
+				for (int p = min(prep + 200, pmax); p >= prep; p -= 10)
 				{
-					testflag = true;
 					del = delta(dp[i][j][k], p, k);
 					if (del.ds < 0)
 						continue;
@@ -133,12 +137,7 @@ int solve()
 					}
 				}
 			}
-		if (!testflag)
-		{
-			system("pause");
-		}
 	}
-
 	return -1;
 }
 int antisolve()
@@ -171,13 +170,10 @@ void path()
 		k = tk;
 	}
 }
-// 1th 481.73 6.31 18.56 0.03
-// 2th 909.50 5.58 53.89 0.12
-// 3th 637.3 35.3 4.7 0.20
-// 4th 467.27 9.39 11.51 0.07
-double peo[5][5] = {{481.73, 6.31, 18.56, 0.03}, {909.50, 5.58, 53.89, 0.12}, {637.3, 35.3, 4.7, 0.20}, {467.27, 9.39, 11.51, 0.07}};
+
 int main()
 {
+<<<<<<< HEAD
 	string terrain_src_path;
 	cout << "choose people 0~3:\n";
 	int pe;
@@ -215,6 +211,32 @@ int main()
 	//  cout << delta(0, 160, 1).ds<<" "<<delta(0,160,1).dv;
 	/*total_time = solve();
 	cout << "Found: " << total_time << endl;
+=======
+	int athlete_id;
+	cout << "Choose athlete_id(0~3): ";
+	cin >> athlete_id;
+	cout << "Input cyclers' M E CP LT: " << endl;
+	M = athlete_data[athlete_id][0];
+	E = athlete_data[athlete_id][1];
+	CP = athlete_data[athlete_id][2];
+	LT = athlete_data[athlete_id][3];
+	{
+		cout << "Reading source of terrain data...";
+		ifstream terrain(map_perfix + map_name + "_data.txt");
+		while (terrain >> h[cnt++])
+			h[cnt-1]*=1;
+		h[cnt] = h[cnt - 1];
+		cout << "Done!" << endl;
+	}
+	if (enable_wind)
+		wind();
+	total_time = solve();
+	cout << endl;
+	if (total_time != -1)
+		cout << "Found! Total time: " << total_time << endl;
+	else
+		cout << "Not Found!" << endl;
+>>>>>>> 016baa2 (Update: 2022_MCM_ICM/solution/sol.cpp)
 	path();
 	for (int i = 0; i < total_time - 1; i++)
 		cout << ansp[i] << ' ';
