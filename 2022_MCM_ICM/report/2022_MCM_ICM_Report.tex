@@ -13,6 +13,7 @@
 \usepackage{fancyhdr}
 
 \usepackage{float}
+\usepackage{caption}
 \usepackage{subcaption}
 \usepackage{lipsum}
 \usepackage{tabularx}
@@ -24,6 +25,11 @@
 \usepackage{diagbox}
 \usepackage{booktabs}
 \usepackage{svg}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{multirow}
+
 \lhead{Team \Team}
 \rhead{}
 \cfoot{}
@@ -46,6 +52,21 @@
          & \parbox[t]{0.3\linewidth}{\begin{center}\textbf{Team Control Number}\\ \Large \textcolor{red}{\Team}\end{center}} \\
         \hline
     \end{tabular}}
+
+\lstset{
+    language = C++,
+    backgroundcolor = \color{gray!10},    % 背景色：淡黄
+    basicstyle = \small\ttfamily,           % 基本样式 + 小号字体
+    rulesepcolor= \color{gray},             % 代码块边框颜色
+    breaklines = true,                  % 代码过长则换行
+    numbers = left,                     % 行号在左侧显示
+    numberstyle = \small,               % 行号字体
+    showspaces = false,                 % 不显示空格
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{gray},
+    morecomment=[l][\color{magenta}]{\#}
+}
 
 %%%%%%%%%%% Begin Summary %%%%%%%%%%%
 
@@ -74,7 +95,7 @@ it will accumulate at a fixed rate which we call the Accumulation rate of the la
 to simulate how fatigue will influence our riders in a race.
 
 In reality, the riders have to focus on the riding, they can not change their power all the time, thus building a continuous model is not only very complex but also unnecessary and impractical.
-So we think it is only reasonable that we discretize the time in a race and use dynamic programming to analyze the power strategy in each period and find the best solution. 
+So we think it is only reasonable that we discretize the time in a race and use dynamic programming to analyze the power strategy in each period and find the best solution.
 
 Then we are going to test our model on several riders in a given TT(time trial) course and a course of our design. We need the riders to be various, so we choose two different types of riders, time trial
 specialists and climbers, and we will define a male and a female for each type who has the typical features of that type.
@@ -318,11 +339,19 @@ coefficients and our parameters and built the power profiles of them.
     \right.
 \end{equation}
 In the end, we get the profile.
-\begin{figure}
+
+\begin{table}[h]
     \centering
-    \includegraphics[width=.8\columnwidth]{Rider's profile.jpg}
-    \caption{Rider's profile}
-\end{figure}
+    \begin{tabular}{@{}ccccccc@{}}
+        \toprule
+        Rider's Type                           & Name           & M      & E    & CP    & L    & Gender \\ \midrule
+        \multirow{2}{*}{Time Trial Specialist} & Eddie Anderson & 467.27 & 9.39 & 11.51 & 0.07 & Male   \\
+                                               & Jessica Allen  & 637.3  & 35.3 & 4.7   & 0.2  & Female \\
+        \multirow{2}{*}{Climber}               & Johannes Weber & 909.5  & 5.58 & 53.89 & 0.12 & Male   \\
+                                               & Eva Buchholz   & 481.73 & 6.31 & 18.56 & 0.03 & Female \\ \bottomrule
+    \end{tabular}
+    \caption{AAA}
+\end{table}
 According to the profile, the climbers have a faster recovery rate, this matches the common view. Climbers also have a great ability to recover between efforts they make on
 the mountain. This means that they can go into an anaerobic effort such as an attack and recover from it quickly to make another acceleration.
 
@@ -372,7 +401,7 @@ which is two two-dimensional matrices, we plot the two matrix to demonstrate the
 
     \subcaptionbox{Johannes Weber's power curve}{\includesvg[width=.4\columnwidth]{"csi2"}}
     \subcaptionbox{Eva Buchholz's power curve}{\includesvg[width=.4\columnwidth]{"csi1"}}
-    \caption {power curves of the chosen riders}
+    \caption {The power curves of the chosen riders}
 \end{figure}
 
 \begin{figure}[H]
@@ -404,7 +433,7 @@ However, there are also some disadvantages that we can not ignore:
     \item Even though we have discretized the race, our model’s instructions are still too ideal, the riders will still have to change their power constantly, which is
           almost impossible in any race. %没有考虑转弯
 \end{enumerate}
-\section{Requirement 3}
+\section{Requirement 3: Weather Influence}
 In the first two requirements, the speed of wind($v_m$) is always zero, and it will result in a decrease in simulation accuracy.
 Now we take the influence of the wind into account,  $v_m$, which means the speed of the wind, will be given a constant value, but its direction will change, the
 to test the sensitivity of the model, if the change of the time needed to finish the race will not vary significantly the sensitivity of our model
@@ -425,11 +454,11 @@ has a window of 7, meaning that the value of the note will be reassigned to the 
 which can simulate the real situation better.
 \begin{figure}
     \centering
-    \includesvg[width=1\columnwidth]{"smoothed"}
+    \includesvg[width=.6\columnwidth]{"smoothed"}
     \caption{Smooth power curve}
 \end{figure}
 
-After that, we substituted the smooth power back to the model of the track to find how far the rider can go if he or she rides with the new curve. The farther he can go, the 
+After that, we substituted the smooth power back to the model of the track to find how far the rider can go if he or she rides with the new curve. The farther he can go, the
 less sensitive our model is. And in the end, the new distance is 30\% as long as the original one, which means that our model is sensitive to rider deviations from the target power
 distribution.
 \section{Requirement 5}
@@ -440,8 +469,8 @@ To find a way to analyze the influence of the teammates, we need a model of the 
 position of the team members. Then, there are two a possible ways to find the right way for the team to cooperate.
 \subsection{A fix formation}
 First, we run the model separately with the data of all six members and rank their scores. Second, we should find a way form from the best formation, this formation will
- set some restrictions for the formation which guarantee that the first 3 riders will not fall behind the forth when the ride together, then we will run the models again to 
- find the optimal power use for the team.
+set some restrictions for the formation which guarantee that the first 3 riders will not fall behind the forth when the ride together, then we will run the models again to
+find the optimal power use for the team.
 \subsection{The overall analysis}
 Again, we run the model separately with the data of all six members and rank their scores. This time, we analyze the first four riders as a whole, whoever has more strength
 left will be windbreakers, in this way, we try the keep the consumption of the stamina $\frac{P}{E}$, to do so, we add one more dimension $o$ in our dynamic programming, which
@@ -450,8 +479,7 @@ the lowest stamina in the team is $J$ and the velocity of the team is $v$. We ad
 decrease the air friction of the others, and increase the air friction of himself or herself.
 
 
-\newpage
-\section{Requirement 6}
+\section{Requirement 6: Rider's Guidance}
 \begin{center}
     \huge \textbf{Rider's Guidance}
 \end{center}\large
@@ -470,22 +498,22 @@ fast and easy.
 So here are the general suggestion of the model:
 \begin{enumerate}
     \item Always keeps a steady pace, in the simulations made by the model before with your data, the curve is always periodical, which means it has a certain pattern. Such a
-    pattern is what we call a pace, in the past, we often have trouble finding a proper pace for the riders, now with the help of the new model, we can find the
-    better pace easier. Yet finding the pace is only a start, in the next few months, you will try your best to ride in the best way that the model shows, the most important part of this training are to find your pace.
-    \item  Pay close attention to your power meter. The instructions of the model are very helpful, yet very cruel, it may ask you to change your 
-    power rapidly so that you can be ready for the next attack, and if you failed to follow one instruction, you are very likely to fail the next instruction and if you do so
-    the effectiveness of the model's plan will decline.  So in the next training, you should learn how to use your power meter effectively, you should control your power while
-    paying attention to the surrounding environment-- not just to avoid an accident, but also to remember when to change your power, it will be though, be it certainly worth it.
+          pattern is what we call a pace, in the past, we often have trouble finding a proper pace for the riders, now with the help of the new model, we can find the
+          better pace easier. Yet finding the pace is only a start, in the next few months, you will try your best to ride in the best way that the model shows, the most important part of this training are to find your pace.
+    \item  Pay close attention to your power meter. The instructions of the model are very helpful, yet very cruel, it may ask you to change your
+          power rapidly so that you can be ready for the next attack, and if you failed to follow one instruction, you are very likely to fail the next instruction and if you do so
+          the effectiveness of the model's plan will decline.  So in the next training, you should learn how to use your power meter effectively, you should control your power while
+          paying attention to the surrounding environment-- not just to avoid an accident, but also to remember when to change your power, it will be though, be it certainly worth it.
     \item Keep going. In the solution provided by the model, the time-distance relationship is nearly linear, which means all those complicated instructions were just a way to help
-    you find the way to keep your velocity steadily, so it is unwise to use up all your strength at once, the right way is to find a proper speed and try you best to maintain 
-    it.
+          you find the way to keep your velocity steadily, so it is unwise to use up all your strength at once, the right way is to find a proper speed and try you best to maintain
+          it.
 \end{enumerate}
 
 \begin{figure}[H]
     \centering
     \subcaptionbox*{v1}{\includesvg[width=.4\columnwidth]{"average"}}
     \subcaptionbox*{v2}{\includesvg[width=.4\columnwidth]{"avr2"}}
-    
+
     \caption{The constant speed}
 \end{figure}
 A pre-performance routine means your attention stays in the present and only on elements that are task-relevant. It helps reduce anxiety, gets you to your optimal level
@@ -499,6 +527,11 @@ Now go!
 
 \bibliographystyle{plain}
 \bibliography{2022_MCM_ICM_Report}
+
+\section{Appendix: Solution.cpp}
+\lstinputlisting{../solution/sol.cpp}
+
+
 %%%%%%%%%%% End Paper %%%%%%%%%%%
 \end{document}
 \end
