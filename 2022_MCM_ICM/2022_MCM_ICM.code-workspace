@@ -5,6 +5,10 @@
 		}
 	],
 	"settings": {
-		"editor.codeLensFontSize": 1
+		"editor.codeLensFontSize": 1,
+		"files.associations": {
+			"fstream": "cpp",
+			"utility": "cpp"
+		}
 	}
 }

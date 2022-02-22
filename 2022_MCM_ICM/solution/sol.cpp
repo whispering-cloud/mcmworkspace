@@ -7,8 +7,8 @@
 
 using namespace std;
 
-const string map_perfix="../problem/data/";
-const string map_name = "men-elite";
+const string map_perfix = "../problem/data/";
+const string map_name = "square"; // men-elite square women-individual-time-trial
 const bool enable_wind = false;
 
 const double athlete_data[4][4] = {
@@ -156,7 +156,7 @@ int antisolve()
 	}
 	return antis;
 }
-//
+
 void path()
 {
 	int j = result.dr;
@@ -185,9 +185,10 @@ int main()
 		cout << "Reading source of terrain data...";
 		ifstream terrain(map_perfix + map_name + "_data.txt");
 		while (terrain >> h[cnt++])
-			h[cnt-1]*=1;
+			continue;
+		h[1]=h[0]-0.1;
 		h[cnt] = h[cnt - 1];
-		cout << "Done!" << endl;
+		cout << "Done! Count number:" <<cnt<< endl;
 	}
 	antisolve();
 	if (enable_wind)
@@ -204,7 +205,6 @@ int main()
 	cout << endl;
 	for (int i = 0; i < total_time - 1; i++)
 		cout << anss[i] << ' ';
-	
 	cout << antisolve();
 
 	return 0;

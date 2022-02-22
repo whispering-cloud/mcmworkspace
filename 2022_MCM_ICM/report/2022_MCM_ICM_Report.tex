@@ -71,8 +71,8 @@ it the maximum stamina. Naturally, we denote the stamina at the moment to be $R$
 will decrease when the riders' power is larger than 0, and meanwhile slowly recovers in a fixed rate $CP$,
 but it can never exceed $R_0$. Yet unlike the decline of stamina, the effects of lactic acid accumulation hardly fade away in the race, instead,
 it will accumulate at a fixed rate which we call the Accumulation rate of the lactate effect, denoted as $L$. With these model we can set restrictions
-to simulate how fatigue will influence our riders in a race.
-,which will slowly recover, but can never exceed $R_O$. Yet unlike the decline of stamina, the effects of lactic acid accumulation hardly fade away
+to simulate how fatigue will influence our riders in a race,
+which will slowly recover, but can never exceed $R_O$. Yet unlike the decline of stamina, the effects of lactic acid accumulation hardly fade away
 in the race, instead, it will accumulate at a fixed rate which we call the lactate effect rate, denoted as $L$. With these model we can set restrictions
 to simulate how fatigue will influence our riders in a race.
 
@@ -85,7 +85,7 @@ specialists and climbers, and we will define a male and a female who has the typ
 To keep the data from getting out of line, we analyze the power curve
 from https://www.strava.com/pros following the following steps:
 we derive from our model that if the rider keeps the maximum power that he or she can give, a term in the polynomial of the power curve,  which simulate the influence of the stamina should be exponential,
-which is $m*n^x+k$, yet the influence of Lactic acid is liner, which is $l*x+k$, so the power curve should be in the form of $y=m*n^x+l*x+k$.
+which is $m*n^x+k$, yet the influence of Lactic acid is liner, which is $l*x+k$, so the power curve should be in the form of $y=m*n^x+l*x+k$,
 and it fits the power curve we acquired from the website.
 Then we used the least square method to fit the equation to all four riders' power curve and  %拟合的表达
 got the value of $m,n,k,l$ for each rider. According to our model, we found the relationship between these
@@ -96,7 +96,7 @@ then use the Reverse-Engineering Visualizations method developed by Jorge Poco1 
 
 After testing we find the model has a few trivial problems, so we improved our model.
 First by taking the weather into account, we mainly analyze the influence of the
-wind, for the air friction is the main resistance. In stronger wind, which the speed of wind is faster, the air friction will be stronger ,
+wind, for the air friction is the main resistance. In stronger wind, which the speed of wind is faster, the air friction will be stronger,
 and the riders' speed will drop considerably.
 
 What's more our model' instructions are still too ideal, the riders will still have to change their power constantly, so we will use the slip window algorithm to make the curve
@@ -279,18 +279,18 @@ and a proof of the reasonableness of this method will be given later.
 %除时间，体力与速度外的其他变量均不具有后效性
 %因为为有重叠子问题，可以用动态规划
 %连续变化：每段时间内功率变化不能过大
-To use the method of dynamic programming, we should first find the variables that has aftereffect, they are:  time ,stamina, and velocity. Together, these three variables
+To use the method of dynamic programming, we should first find the variables that has aftereffect, they are:  time, stamina, and velocity. Together, these three variables
 uniquely determine any state.
 The state transition equation of the dynamic programming is:\begin{equation}dp_{i+1,j+r_p,v+v_p}= max_{\max\{0,p_0-100\}}^{\min\{M\frac{j}{R}-Lt,p_0+100\}}\{dp_{i,j,v}+s_p\}\end{equation}
 
 In the $dp_{i,j,v}$ means the maximum distance the rider can go when time is $i$, stamina is $j$ and velocity is $v$, and the boundary condition is $dp_{i,j,v}\geqslant S_0$
-\section{Requireemt 1:Power Profile}
+\section{Requirement 1:Power Profile}
 First we shall define a few "volunteers" to test our model, we need them to be various, we shall choose two different types of rider, time trial
 specialists and climbers, and we will define a male and a female for each of the two types of riders. %修改表达
 To keep the data from getting out of line, we analyze the power curve
 from https://www.strava.com/pros following the following steps:
 First, we derive from our model that if the rider keeps the maximum power that he or she can give, a term in the polynomial of the power curve,  which simulate the influence of the stamina should be exponential,
-which is $m\cdot n^x+k$, yet the influence of Lactic acid is liner, which is $l\cdot x+k$, so the power curve should be in the form of $y=m\cdot n^x+l\cdot x+k$.
+which is $m\cdot n^x+k$, yet the influence of Lactic acid is liner, which is $l\cdot x+k$, so the power curve should be in the form of $y=m\cdot n^x+l\cdot x+k$
 and it fits the curve we acquired.
 
 \begin{figure}[H]
@@ -317,7 +317,7 @@ coefficients and our parameters and built the power profiles of them.
 In the end, we get the profile.
 \begin{figure}
     \centering
-    \includegraphics[width=1\columnwidth]{Rider's profile.jpg}
+    \includegraphics[width=.8\columnwidth]{Rider's profile.jpg}
     \caption{Rider's profile}
 \end{figure}
 According to the profile, the climbers has a faster recover rate, this match the common view. Climbers also have a great ability to recover between efforts they make on
@@ -326,7 +326,7 @@ the mountain. This means that they can go into an anaerobic effort such as an at
 The TT specialist, in the other hand has a higher Stamina-to-work conversion efficiency, which helps them to sustain a higher power for a longer time, it is a great advantage
 in a TT race.
 
-\section{Requirement 2:test}
+\section{Requirement 2: Test}
 Here we will apply our model to a time trial courses--the 2021 UCI World Championship time trial course in Flanders, Belgium --for each power profile we defined
 above to prove that out model can be solved, the value of some parameter is show below:
 \begin{table}[H]
@@ -345,41 +345,41 @@ above to prove that out model can be solved, the value of some parameter is show
     \end{tabular}
     \caption{Value of some parameters, from https://www.sheldonbrown.com/rinard/aero/formulas.html}
 \end{table}
-We first find the course profile--the route map and the topographic map of the course-from https://www.flanders2021.com
+We first find the course profile -- the route map and the topographic map of the course (from https://www.flanders2021.com)
 then use the Reverse-Engineering Visualizations method developed by Jorge Poco1 and Jeffrey Heer in 2017\cite{poco2017reverse} to get the data we need about the racing track,
 which is two two-dimensional matrices, we plot the two matrix to demonstrate them.
 
 \begin{figure}[H]
     \centering
-    \subcaptionbox*{men elite route map (from https://www.flanders2021.com)}{\includegraphics[width=0.4\columnwidth]{men-elite-individual-time-trial-map}}
-    \subcaptionbox*{men elite route map matrix demo}{\includegraphics[width=0.4\columnwidth]{man_elite_map_matrix_demo}}
+    \subcaptionbox{Men elite route map}{\includegraphics[width=0.4\columnwidth]{men-elite-individual-time-trial-map}}
+    \subcaptionbox{Men elite route map matrix demo}{\includegraphics[width=0.4\columnwidth]{man_elite_map_matrix_demo}}
 
-    \subcaptionbox*{men elite topographic map}{\includegraphics[width=1\columnwidth]{men-elite-individual-time-trial-profile}}
+    \subcaptionbox{Men elite topographic map}{\includegraphics[width=1\columnwidth]{men-elite-individual-time-trial-profile}}
 
-    \subcaptionbox*{men elite topographic map matrix demo}{\includegraphics[width=1\columnwidth]{men-elite-individual-time-trial-profile-matrix demo}}
+    \subcaptionbox{Men elite topographic map matrix demo}{\includegraphics[width=1\columnwidth]{men-elite-individual-time-trial-profile-matrix demo}}
     \caption{Course's map}
 \end{figure}
 
 
 \begin{figure}[H]
     \centering
-    \subcaptionbox*{Eddie Anderson's power curve}{\includesvg[width=.4\columnwidth]{"csi4"}}
-    \subcaptionbox*{Jessica Allen's power curve}{\includesvg[width=.4\columnwidth]{"csi3"}}
+    \subcaptionbox{Eddie Anderson's power curve}{\includesvg[width=.4\columnwidth]{"csi4"}}
+    \subcaptionbox{Jessica Allen's power curve}{\includesvg[width=.4\columnwidth]{"csi3"}}
 
-    \subcaptionbox*{Johannes Weber's power curve}{\includesvg[width=.4\columnwidth]{"csi2"}}
-    \subcaptionbox*{Eva Buchholz's power curve}{\includesvg[width=.4\columnwidth]{"csi1"}}
+    \subcaptionbox{Johannes Weber's power curve}{\includesvg[width=.4\columnwidth]{"csi2"}}
+    \subcaptionbox{Eva Buchholz's power curve}{\includesvg[width=.4\columnwidth]{"csi1"}}
     \caption {power curves of the chosen riders}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \subcaptionbox*{self designed route map matrix demo}{\includegraphics[width=.4\columnwidth]{self-designed_map_matrix_demo}}
-    \subcaptionbox*{self designed topographic map matrix demo}{\includesvg[width=.6\columnwidth]{triangle}}
+    \subcaptionbox{Self designed route map matrix demo}{\includegraphics[width=.4\columnwidth]{self-designed_map_matrix_demo}}
+    \subcaptionbox{Self designed topographic map matrix demo}{\includesvg[width=.4\columnwidth]{triangle}}
     \caption{Self-designed map}
 \end{figure}
 \begin{figure}
     \centering
-    \includesvg[width=1\columnwidth]{"squ3s15"}
+    \includesvg[width=.6\columnwidth]{"squ3s15"}
     \caption{Jessica Allen's power curve in the self-designed map}
 \end{figure}
 After a few tests, we find the best power curve for each of the four riders, in the tests, we realized that
@@ -396,8 +396,7 @@ However, there are also some disadvantages that we can not ignore:
     \item The influence between the riders were not taken into account, in a real race the rider will try to grab a vantage point, which may force some riders to
           slow down. What's more, they will disrupt the airflow, which will change the air friction.%忽略了运动员之间的影响
     \item We didn't consider that the models of movement will be different from the one on the straight road, in our model, the rider was like riding on a straight path
-          all the time
-          .%规划策略可能不易实行
+          all the time.%规划策略可能不易实行
     \item Even though we have discretized the race, our model' instructions are still too ideal, the riders will still have to change their power constantly, which is
           almost impossible in any race. %没有考虑转弯
 \end{enumerate}
@@ -409,7 +408,7 @@ is considered low, after another few tests, the result is shown below.
 \begin{figure}
     \centering
     \includesvg[width=1\columnwidth]{"radar"}
-    \caption{Sensitive Alynasis}
+    \caption{Sensitive analysis}
 \end{figure}
 When the wind speed is set at 10$m/s$ the influence is relatively small-the maximum difference is just over 100s, which is negligible when compare to the total time of
 near an hour. The result is thrilling, for it means that our model is not very sensitive to the change of the weather, windy or not, the model tends to give similar--and
@@ -417,8 +416,7 @@ equally useful--guidance. Which means we don't have to predict the future weathe
 \section{Requirement 4}
 As mentioned before, the guidance given by our current model is too detailed and ideal, thus we are concerned that whether the model will be impractical if the rider can't
 follow the instructions. In this section, we will try to find a way to simulate the influence of missing the power target. Here we will use the sliding window algorithm which
-has a window of 7, meaning that the value of the note will be reassigned to the mean value of three values on both sides and itself. This algorithm will make the curve smooth
-,which is closer to reality.
+has a window of 7, meaning that the value of the note will be reassigned to the mean value of three values on both sides and itself. This algorithm will make the curve smooth, which is closer to reality.
 \begin{figure}
     \centering
     \includesvg[width=1\columnwidth]{"smoothed"}
@@ -429,7 +427,7 @@ Again we will try to improve our model, this time we will analyze the proper way
 determined when the fourth rider crosses the finish line. Clearly, the two slowest member matter little, what's important is how the first three riders should help the forth.
 
 To find a way to analyze the influence of the teammates, we need a model of the windbreakers, which described how the air friction will change according to the relative
-position of the teammembers.
+position of the team members.
 \newpage
 \section{Requirement 6}
 \begin{center}
@@ -443,7 +441,7 @@ the champion. This knowledge can also significantly improve your chances of fini
 
 Time trials are called the 'race of truth' for good reason. There's no hiding in the bunch before the sprint, you have to work for your speed every inch of the way, so it
 became extremely  important to keep a reasonable pace, and this guidance aims to help you do so.
-Recently a new model has been developed to find the best racing strategy for each rider, from your trainings and races in the past, it was able to quantificat your ability
+Recently a new model has been developed to find the best racing strategy for each rider, from your trainings and races in the past, it was able to quantificate your ability
 like stamina, recovery, critical power and maximum power the model will show you when to slow down and when to speed up, with a proper pace you will be able to ride
 fast and easy.
 
