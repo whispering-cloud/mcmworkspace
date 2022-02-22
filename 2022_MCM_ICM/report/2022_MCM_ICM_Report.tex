@@ -66,7 +66,7 @@ power while traversing a given time trial course?
 Our team aims to establish a model that can give the optimal plan for any  rider, which tells them exactly when to accelerate,
 and when to slow down so that they can make the best of themselves. Firstly, we designed a mathematical model of movement in the race, and then we studied the power-duration models built by multiple articles(Mark Burnley \& Andrew M. Jones, 2016)\cite{doi:10.1080/17461391.2016.1249524}
 (Peter Leo,2021)\cite{leo2021power}(Andrea Zignoli, Francesco Biral,2020)\cite{zignoli2020prediction}, and found that all of them can be described as the product of time and the difference
-between the power in this period and the critical power $CP$ is a constant value, which we denote as $R_0$ we consider $R_0$ a perfect parameter to measure stamina, we call
+between the power in this period and the critical power $CP$ is a constant value, which we denote as $R_0$. We consider $R_0$ a perfect parameter to measure stamina, we call
 it the maximum stamina. Naturally, we denote the stamina at the moment to be $R$, it
 will decrease when the riders' power is larger than 0, and meanwhile slowly recovers in a fixed rate $CP$,
 but it can never exceed $R_0$. Yet unlike the decline of stamina, the effects of lactic acid accumulation hardly fade away in the race, instead,
@@ -416,18 +416,34 @@ equally useful--guidance. Which means we don't have to predict the future weathe
 \section{Requirement 4}
 As mentioned before, the guidance given by our current model is too detailed and ideal, thus we are concerned that whether the model will be impractical if the rider can't
 follow the instructions. In this section, we will try to find a way to simulate the influence of missing the power target. Here we will use the sliding window algorithm which
-has a window of 7, meaning that the value of the note will be reassigned to the mean value of three values on both sides and itself. This algorithm will make the curve smooth, which is closer to reality.
+has a window of 7, meaning that the value of the note will be reassigned to the mean value of three values on both sides and itself. This algorithm will make the curve smooth,
+which can simulate the real situation better.
 \begin{figure}
     \centering
     \includesvg[width=1\columnwidth]{"smoothed"}
     \caption{Smooth power curve}
 \end{figure}
+
+After that, we substituted the smooth power back to the model of the track to find how far the rider can go if he or she rides with the new curve. The farther he can go, the 
+less sensitive our model is. And in the end, the new distance is 30\% as long as the original one, which means that our model is sensitive  to rider deviations from the target power
+distribution.
 \section{Requirement 5}
 Again we will try to improve our model, this time we will analyze the proper way of team work. The extended new model should be able to  include the optimal power use for a team time trial of six riders per team, where the team's time is
 determined when the fourth rider crosses the finish line. Clearly, the two slowest member matter little, what's important is how the first three riders should help the forth.
 
 To find a way to analyze the influence of the teammates, we need a model of the windbreakers, which described how the air friction will change according to the relative
-position of the team members.
+position of the team members. Then, there are to possible way to find the right way for the team to cooperate.
+\subsection{A fix formation}
+First, we run the model separately with the data of all six members and rank their score. Second, we should find a way to from the best formation, this formation will
+ set some restrictions for the formation which guarantee that the first 3 riders will not fall behind the forth when the ride together, then we will run the models again to 
+ find the optimal power use for the team.
+\subsection{The overall analysis}
+Again, we run the model separately with the data of all six members and rank their score. This time, we analyze the first four riders as a whole, whoever has more strength
+left will be windbreakers, in this way, we try the keep the consumption of the stamina $\frac{P}{E}$, to do so,we add one more dimension $o$ in our dynamic programming, which
+means the number of the windbreakers in the team. Redefine $dp_{i,j,v,o}$ as the maximum distance that the forth menber can reach when the time is $i$, stamina is $R\cdot E$,
+the lowest stamina in the team is $J$ and the velocity of the team is $v$. We add a new path for the team members to become the windbreaker, which will increase $o$ by 1,and
+decrease the air friction of the others and increase of the air friction of himself or herself.
+
 \newpage
 \section{Requirement 6}
 \begin{center}
@@ -447,9 +463,25 @@ fast and easy.
 
 So here are the general suggestion of the model:
 \begin{enumerate}
-    \item Always keeps a steady pace, in the %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \item Always keeps a steady pace, in the simulations made by the model before with your data, the curve is always periodical, which means it has a certain pattern. Such 
+    pattern is what we call a pace, in the past, we often have trouble finding a proper pace for the riders, now with the help of the new model, we are able to find the
+    better pace easier. Yet finding the pace is only a start, in the next few months, you will try your best to ride with the best way that the model shows, the most important part of this training is to find your pace.
+    \item  Pay close attention to your power meter. The instructions of the model is very helpful, yet very cruel, it is possible that it ask you to change your 
+    power rapidly so that you can be ready for the next attack, and if you failed to follow one instruction, you are very likely to fail the next instruction and if you do so
+    the effectiveness of the model's plan will decline.  So in the next training you should learn how to use you power meter effectively, you should control your power while
+    paying attention to the surrounding environment-- not just to avoid accident, but also to remember when to change your power, it will be though, be it certainly worth it.
+    \item Keep going. In the solution provided by the model the time-distance relationship is nearly liner, which means all those complicated instructions were just a way to help
+    you find the way to keep your velocity steadily, so it is unwise to use up all your strength at once, the right way is to find a proper speed and try you best to maintain 
+    it.
 \end{enumerate}
 
+\begin{figure}[H]
+    \centering
+    \subcaptionbox*{v1}{\includesvg[width=.4\columnwidth]{"average"}}
+    \subcaptionbox*{v2}{\includesvg[width=.4\columnwidth]{"avr2"}}
+    
+    \caption{The constant speed}
+\end{figure}
 A pre-performance routine means your attention stays in the present and only on elements that are task-relevant. It helps reduce anxiety, gets you to your optimal level
 of nerves, and improves concentration, focus and performance.
 
