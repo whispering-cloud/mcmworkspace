@@ -51,7 +51,7 @@
 
 \begin{center}
     \Large
-    \textbf{Storing the Sun:a Model for Off-grid Power System Design}
+    \textbf{Smart riding: a model to guide the riders in a time trial with dynamic programming}
 \end{center}
 
 \begin{center}
@@ -71,38 +71,36 @@ it the maximum stamina. Naturally, we denote the stamina at the moment to be $R$
 will decrease when the riders' power is larger than 0, and meanwhile slowly recovers in a fixed rate $CP$,
 but it can never exceed $R_0$. Yet unlike the decline of stamina, the effects of lactic acid accumulation hardly fade away in the race, instead,
 it will accumulate at a fixed rate which we call the Accumulation rate of the lactate effect, denoted as $L$. With these model we can set restrictions
-to simulate how fatigue will influence our riders in a race,
-which will slowly recover, but can never exceed $R_O$. Yet unlike the decline of stamina, the effects of lactic acid accumulation hardly fade away
-in the race, instead, it will accumulate at a fixed rate which we call the lactate effect rate, denoted as $L$. With these model we can set restrictions
 to simulate how fatigue will influence our riders in a race.
 
-In reality, the riders have to focus on the riding, they can not change their power all the time, thus building a continuous model is not only very complex, but also unnecessary and impractical.
-So we think it is only reasonable that we discretize the time in a race  it and use dynamic programming to analyze the power strategy in each period and find the best solution. And a proof of
-the reasonableness of this method will be given later.
+In reality, the riders have to focus on the riding, they can not change their power all the time, thus building a continuous model is not only very complex but also unnecessary and impractical.
+So we think it is only reasonable that we discretize the time in a race and use dynamic programming to analyze the power strategy in each period and find the best solution. 
 
-Then we are going to test our model on several riders in a given TT(time trial) course and a course of our own design. We need them to be various, so we choose two different types of riders, time trial
-specialists and climbers, and we will define a male and a female who has the typical features of their type for each of the two types of riders.
+Then we are going to test our model on several riders in a given TT(time trial) course and a course of our design. We need the riders to be various, so we choose two different types of riders, time trial
+specialists and climbers, and we will define a male and a female for each type who has the typical features of that type.
 To keep the data from getting out of line, we analyze the power curve
-from https://www.strava.com/pros following the following steps:
-we derive from our model that if the rider keeps the maximum power that he or she can give, a term in the polynomial of the power curve,  which simulate the influence of the stamina should be exponential,
-which is $m*n^x+k$, yet the influence of Lactic acid is liner, which is $l*x+k$, so the power curve should be in the form of $y=m*n^x+l*x+k$,
+from https://www.strava.com/pros by the following steps:
+we derive from our model that if the rider keeps riding with the maximum power that he or she can give, a term in the polynomial of the power curve,  which simulates the influence of the stamina, should be exponential,
+which is $m*n^x+k$, yet the influence of Lactic acid is a liner, which is $l*x+k$, so the power curve should be in the form of $y=m*n^x+l*x+k$,
 and it fits the power curve we acquired from the website.
 Then we used the least square method to fit the equation to all four riders' power curve and  %拟合的表达
 got the value of $m,n,k,l$ for each rider. According to our model, we found the relationship between these
 coefficients and our parameters and built the power profiles of them.
 
+
 We also need the map of the race, we found the course profile from https://www.flanders2021.com
 then use the Reverse-Engineering Visualizations method developed by Jorge Poco1 and Jeffrey Heer in 2017\cite{poco2017reverse} to get the data we need about the racing track.
 
 After testing we find the model has a few trivial problems, so we improved our model.
-First by taking the weather into account, we mainly analyze the influence of the
-wind, for the air friction is the main resistance. In stronger wind, which the speed of wind is faster, the air friction will be stronger,
+First, by taking the weather into account, we mainly analyze the influence of the
+wind, for air friction is the main resistance. In stronger wind, the speed of wind is faster, the air friction will be stronger,
 and the riders' speed will drop considerably.
 
-What's more our model' instructions are still too ideal, the riders will still have to change their power constantly, so we will use the slip window algorithm to make the curve
+What's more, our model' instructions are still too ideal, the riders will still have to change their power constantly, so we will use the slip window algorithm to make the curve
 smoother, which means less frequent instructions.
 
-Finally, we are able to  give a two-page detailed guide to the riders and their team.
+Finally, we can give a two-page detailed guide to the riders and their team.
+
 
 \begin{flushleft}
     \textbf{Keywords:} Dynamic Programming, Power-duration model, Discretization
@@ -132,12 +130,12 @@ least amount of time.
 An individual rider can produce different levels of power for different lengths of time, and the
 amount of power and how long a given amount of power a rider can produce varies greatly
 between riders. A rider's power curve indicates how long a rider can produce a given amount of
-power. In other words, for a particular length of time the power curve provides the maximum
+power. In other words, for a particular length of time, the power curve provides the maximum
 power a rider can maintain for that given time. Generally, the more power a rider produces, the
-less time the rider can maintain that power before having to reduce the amount of power and
+less time the rider can maintain that power before having to reduce the power and
 recover. A rider may choose to briefly exceed the limits on their power curve, but the rider then
 requires extra time at a lower power level to recover. Moreover, a rider's power output in the
-past matters, and riders are increasingly fatigued as a race progresses.
+past matters and riders are increasingly fatigued as a race progresses.
 
 Riders are always looking to minimize the time required to cover a given distance. Given a
 particular rider's capability according to that rider's power curve, how should that rider apply
@@ -147,15 +145,18 @@ rouleur, or a puncheur, and each type of rider has a distinct power curve.
 
 Our team aims to establish a model that can give the optimal plan for any particular rider, which tells them exactly when to accelerate,
 and when to slow down so that they can make the best of themselves.
+
 \subsection{Restatement of the Problem}
 Our team aims to establish a model that can give the optimal plan for any particular rider, which tells them exactly when to accelerate,
 and when to slow down so that they can make the best of themselves. Firstly, we assume the air to be stationary and designed a mathematical model of movement
-in the race, we shall also try to find a power-duration model that is supported by repeatable experiences thus we can  set restrictions  to simulate how fatigue
+in the race, we shall also try to find a power-duration model that is supported by repeatable experiences thus we can set restrictions to simulate how fatigue
 will influence the riders in a race.
+
 \subsubsection{Requirement 1}
-First we shall define a few "volunteers" to test our model, we need them to be various, we shall choose two different types of rider, time trial
+First, we shall define a few "volunteers" to test our model, we need them to be various, we shall choose two different types of riders, time trial
 specialists and climbers, and we will define a male and a female for each of the two types of riders. To keep the data from getting out of line, we will analyze the data of
 real pro riders. We should first find the source of that data and find a way to get the parameters we need in our model
+
 \subsubsection{Requirement 2}
 We need to show that our model can actually work, thus we will apply it to various time trial courses including, at a minimum, the ones listed
 below for each power profile we defined above:
@@ -180,7 +181,7 @@ we design before, we shall find a way to make the curve smooth and see how much 
 Again we will try to improve our model, this time we will analyze the proper way of team work. The extended new model should be able to  include the optimal power use for a team time trial of six riders per team, where the team's time is
 determined when the fourth rider crosses the finish line. Clearly, the two slowest member matter little, what's important is how the first three riders should help the forth.
 \subsection{Requirement 6}
-Now with all those effect, we are finally able to give guidance for the riders, we should conclude  a few rules for riders in two pages from the results of the tests before.
+Now with all those effect, we are finally able to give guidance for the riders, we should conclude a few rules for riders in two pages from the results of the tests before.
 \section{Assumptions and Justification}
 
 To simplify the problem and make it convenient for us to simulate real-life conditions, we make the following basic assumptions, each of which is properly justified.
@@ -227,7 +228,7 @@ To simplify the problem and make it convenient for us to simulate real-life cond
 \section{Model Development}
 We aim to make an individualized, thorough strategy for the riders, we should first find what features of them that we should take into account.
 The speed of a rider
-is closely related to two features, stamina(endurance), and strength. A rider that is stronger can surely ride faster--if he or she is not out of strength, and the ability
+is closely related to two features, stamina(endurance), and strength. A stronger rider can surely ride faster--if he or she is not out of strength, and the ability
 to maintain speed is called stamina.
 Here we measure the strength of riders by the power of the rider riding. Research(Mark Burnley \& Andrew M. Jones, 2016)\cite{doi:10.1080/17461391.2016.1249524}
 (Peter Leo,2021)\cite{leo2021power}(Andrea Zignoli, Francesco Biral,2020)\cite{zignoli2020prediction}%给出式子
@@ -236,8 +237,9 @@ which can be described as the product of time and the difference between the pow
 denote as $R_0$, we consider $R_0$ a perfect parameter to measure stamina, we call it the maximum stamina. Naturally, we denote the stamina at the moment to be $R$, it
 will decrease when the riders' power is larger than 0, and meanwhile slowly recovers in a fixed rate $CP$,
 but it can never exceed $R_0$. Yet unlike the decline of stamina, the effects of lactic acid accumulation hardly fade away in the race, instead,
-it will accumulate at a fixed rate which we call the Accumulation rate of the lactate effect, denoted as $L$. With these model we can set restrictions
+it will accumulate at a fixed rate which we call the Accumulation rate of the lactate effect, denoted as $L$. With these models, we can set restrictions
 to simulate how fatigue will influence our riders in a race.
+
 \begin{equation}
     \left\{
     \begin{array}{c}
@@ -248,13 +250,14 @@ to simulate how fatigue will influence our riders in a race.
     \right.
 \end{equation}
 
-The first restriction indicates that fatigue will slow down the rider, the lower the stamina and the more the lactic acid accumulate, the less power a rider can give.
-The second and third restriction showed changes of stamina, in the third equation,$\frac{d R}{d t}$means the change of the stamina in a short period, which equals to the
+The first restriction indicates that fatigue will slow down the rider, the lower the stamina and the more the lactic acid accumulates, the less power a rider can give.
+The second and third restrictions showed changes of stamina, in the third equation,$\frac{d R}{d t}$means the change of the stamina in a short period, which equals to the
 recovery minus the consumption.
 
 Given that we aim to guide our riders, it is obvious we can not give them very detailed instructions that ask them to change their velocity continuously, so we can treat the time
 as a collection of discrete time periods (here we set the length of the period to be 10s)to simplify this question and give a particle solution to guide our riders.
-Then we can describe how the three parameters of the rider (distance, velocity and stamina) change in a short period of time with a set of physic equations below:
+Then we can describe how the three parameters of the rider (distance, velocity, and stamina) change in a short period with a set of physic equations below:
+
 \begin{equation}
     func: \delta_p(s,p,v)=>(  s_p, r_p, v_p)=\left\{
     \begin{array}{c}
@@ -271,27 +274,27 @@ Then we can describe how the three parameters of the rider (distance, velocity a
     \end{array}
     \right.
 \end{equation}
-In the first equation, the total friction is the sum of three parts the components of gravity, the rolling friction resistance and the air friction,
+In the first equation, the total friction is the sum of three parts the components of gravity, the rolling friction resistance, and the air friction,
 in the first two requirements we set the speed of the wind to be zero. To find the grade of the road, we differentiate the distance and give the grade with the equation
 $\theta=\arctan\frac{d h}{d t}$
-Since we had discretized the time in a race we can use dynamic programming to find the best solution,
-and a proof of the reasonableness of this method will be given later.
+Since we had discretized the time in a race we can use dynamic programming to find the best solution.
 %除时间，体力与速度外的其他变量均不具有后效性
 %因为为有重叠子问题，可以用动态规划
 %连续变化：每段时间内功率变化不能过大
-To use the method of dynamic programming, we should first find the variables that has aftereffect, they are:  time, stamina, and velocity. Together, these three variables
+To use the method of dynamic programming, we should first find the variables that have aftereffect, they are:  time, stamina, and velocity. Together, these three variables
 uniquely determine any state.
 The state transition equation of the dynamic programming is:\begin{equation}dp_{i+1,j+r_p,v+v_p}= max_{\max\{0,p_0-100\}}^{\min\{M\frac{j}{R}-Lt,p_0+100\}}\{dp_{i,j,v}+s_p\}\end{equation}
 
 In the $dp_{i,j,v}$ means the maximum distance the rider can go when time is $i$, stamina is $j$ and velocity is $v$, and the boundary condition is $dp_{i,j,v}\geqslant S_0$
 \section{Requirement 1:Power Profile}
-First we shall define a few "volunteers" to test our model, we need them to be various, we shall choose two different types of rider, time trial
+First, we shall define a few "volunteers" to test our model, we need them to be various, we shall choose two different types of riders, time trial
 specialists and climbers, and we will define a male and a female for each of the two types of riders. %修改表达
 To keep the data from getting out of line, we analyze the power curve
 from https://www.strava.com/pros following the following steps:
-First, we derive from our model that if the rider keeps the maximum power that he or she can give, a term in the polynomial of the power curve,  which simulate the influence of the stamina should be exponential,
-which is $m\cdot n^x+k$, yet the influence of Lactic acid is liner, which is $l\cdot x+k$, so the power curve should be in the form of $y=m\cdot n^x+l\cdot x+k$
+First, we derive from our model that if the rider keeps the maximum power that he or she can give, a term in the polynomial of the power curve,  which simulates the influence of the stamina should be exponential,
+which is $m\cdot n^x+k$, yet the influence of Lactic acid is a liner, which is $l\cdot x+k$, so the power curve should be in the form of $y=m\cdot n^x+l\cdot x+k$
 and it fits the curve we acquired.
+
 
 \begin{figure}[H]
     \centering
@@ -320,15 +323,16 @@ In the end, we get the profile.
     \includegraphics[width=.8\columnwidth]{Rider's profile.jpg}
     \caption{Rider's profile}
 \end{figure}
-According to the profile, the climbers has a faster recover rate, this match the common view. Climbers also have a great ability to recover between efforts they make on
-the mountain. This means that they can go into an anaerobic effort such as an attack and recover from it quickly in order to make another acceleration.
+According to the profile, the climbers have a faster recovery rate, this matches the common view. Climbers also have a great ability to recover between efforts they make on
+the mountain. This means that they can go into an anaerobic effort such as an attack and recover from it quickly to make another acceleration.
 
-The TT specialist, in the other hand has a higher Stamina-to-work conversion efficiency, which helps them to sustain a higher power for a longer time, it is a great advantage
+The TT specialist, on the other hand, has a higher Stamina-to-work conversion efficiency, which helps them to sustain a higher power for a longer time, it is a great advantage
 in a TT race.
 
 \section{Requirement 2: Test}
-Here we will apply our model to a time trial courses--the 2021 UCI World Championship time trial course in Flanders, Belgium --for each power profile we defined
-above to prove that out model can be solved, the value of some parameter is show below:
+Here we will apply our model to a time trial course--the 2021 UCI World Championship time trial course in Flanders, Belgium --for each power profile we defined
+above to prove that our model can be solved, the value of some parameters is shown below:
+
 \begin{table}[H]
     \centering
     \begin{tabular}{cc}
@@ -385,34 +389,35 @@ which is two two-dimensional matrices, we plot the two matrix to demonstrate the
 After a few tests, we find the best power curve for each of the four riders, in the tests, we realized that
 our model has the following advantages:
 \begin{enumerate}
-    \item We discretized the race, thus we are able to use the dynamic programming method, which make sure we find the global optimal solution %应用了动态规划，能保证得到全局最优解
+    \item We discretized the race, thus we can use the dynamic programming method, which makes sure we find the global optimal solution %应用了动态规划，能保证得到全局最优解
     \item We improved our computing efficiency.%计算效率高
-    \item The model of P-D relationship is supported by multiple articles and the fitting is almost perfect.
+    \item The model of the P-D relationship is supported by multiple articles and the fitting is almost perfect.
     \item The solution provided by the model is very effective, it greatly cut the time the riders need to finish the race.
     \item The model can be applied to any type of battery of the same battery type.
 \end{enumerate}
 However, there are also some disadvantages that we can not ignore:
 \begin{enumerate}
-    \item The influence between the riders were not taken into account, in a real race the rider will try to grab a vantage point, which may force some riders to
+    \item The influence between the riders was not taken into account, in a real race, the rider will try to grab a vantage point, which may force some riders to
           slow down. What's more, they will disrupt the airflow, which will change the air friction.%忽略了运动员之间的影响
     \item We didn't consider that the models of movement will be different from the one on the straight road, in our model, the rider was like riding on a straight path
           all the time.%规划策略可能不易实行
-    \item Even though we have discretized the race, our model' instructions are still too ideal, the riders will still have to change their power constantly, which is
+    \item Even though we have discretized the race, our model’s instructions are still too ideal, the riders will still have to change their power constantly, which is
           almost impossible in any race. %没有考虑转弯
 \end{enumerate}
 \section{Requirement 3}
 In the first two requirements, the speed of wind($v_m$) is always zero, and it will result in a decrease in simulation accuracy.
-Now we take the influence of the wind into account,  $v_m$, which means the speed of wind, will be given a constant value, but its direction will change, the
+Now we take the influence of the wind into account,  $v_m$, which means the speed of the wind, will be given a constant value, but its direction will change, the
 to test the sensitivity of the model, if the change of the time needed to finish the race will not vary significantly the sensitivity of our model
-is considered low, after another few tests, the result is shown below.
+is considered low, after another few tests, the result is shown below
+.
 \begin{figure}
     \centering
     \includesvg[width=1\columnwidth]{"radar"}
     \caption{Sensitive analysis}
 \end{figure}
-When the wind speed is set at 10$m/s$ the influence is relatively small-the maximum difference is just over 100s, which is negligible when compare to the total time of
+When the wind speed is set at 10$m/s$ the influence is relatively small-the maximum difference is just over 100s, which is negligible when compared to the total time of
 near an hour. The result is thrilling, for it means that our model is not very sensitive to the change of the weather, windy or not, the model tends to give similar--and
-equally useful--guidance. Which means we don't have to predict the future weather when we try to find the best solution for the race, and it makes to model more trustworthy.
+equally useful--guidance. This means we don't have to predict the future weather when we try to find the best solution for the race, and it makes to model more trustworthy.
 \section{Requirement 4}
 As mentioned before, the guidance given by our current model is too detailed and ideal, thus we are concerned that whether the model will be impractical if the rider can't
 follow the instructions. In this section, we will try to find a way to simulate the influence of missing the power target. Here we will use the sliding window algorithm which
@@ -425,24 +430,25 @@ which can simulate the real situation better.
 \end{figure}
 
 After that, we substituted the smooth power back to the model of the track to find how far the rider can go if he or she rides with the new curve. The farther he can go, the 
-less sensitive our model is. And in the end, the new distance is 30\% as long as the original one, which means that our model is sensitive  to rider deviations from the target power
+less sensitive our model is. And in the end, the new distance is 30\% as long as the original one, which means that our model is sensitive to rider deviations from the target power
 distribution.
 \section{Requirement 5}
-Again we will try to improve our model, this time we will analyze the proper way of team work. The extended new model should be able to  include the optimal power use for a team time trial of six riders per team, where the team's time is
-determined when the fourth rider crosses the finish line. Clearly, the two slowest member matter little, what's important is how the first three riders should help the forth.
+Again we will try to improve our model, this time we will analyze the proper way of teamwork. The extended new model should be able to include the optimal power use for a team time trial of six riders per team, where the team's time is
+determined when the fourth rider crosses the finish line. The two slowest members matter little, what's important is how the first three riders should help the fourth.
 
 To find a way to analyze the influence of the teammates, we need a model of the windbreakers, which described how the air friction will change according to the relative
-position of the team members. Then, there are to possible way to find the right way for the team to cooperate.
+position of the team members. Then, there are two a possible ways to find the right way for the team to cooperate.
 \subsection{A fix formation}
-First, we run the model separately with the data of all six members and rank their score. Second, we should find a way to from the best formation, this formation will
+First, we run the model separately with the data of all six members and rank their scores. Second, we should find a way form from the best formation, this formation will
  set some restrictions for the formation which guarantee that the first 3 riders will not fall behind the forth when the ride together, then we will run the models again to 
  find the optimal power use for the team.
 \subsection{The overall analysis}
-Again, we run the model separately with the data of all six members and rank their score. This time, we analyze the first four riders as a whole, whoever has more strength
-left will be windbreakers, in this way, we try the keep the consumption of the stamina $\frac{P}{E}$, to do so,we add one more dimension $o$ in our dynamic programming, which
-means the number of the windbreakers in the team. Redefine $dp_{i,j,v,o}$ as the maximum distance that the forth menber can reach when the time is $i$, stamina is $R\cdot E$,
+Again, we run the model separately with the data of all six members and rank their scores. This time, we analyze the first four riders as a whole, whoever has more strength
+left will be windbreakers, in this way, we try the keep the consumption of the stamina $\frac{P}{E}$, to do so, we add one more dimension $o$ in our dynamic programming, which
+means the number of the windbreakers in the team. Redefine $dp_{i,j,v,o}$ as the maximum distance that the forth member can reach when the time is $i$, stamina is $R\cdot E$,
 the lowest stamina in the team is $J$ and the velocity of the team is $v$. We add a new path for the team members to become the windbreaker, which will increase $o$ by 1,and
-decrease the air friction of the others and increase of the air friction of himself or herself.
+decrease the air friction of the others, and increase the air friction of himself or herself.
+
 
 \newpage
 \section{Requirement 6}
@@ -456,21 +462,21 @@ to help you control your pace to meet its required so that you can make the best
 the champion. This knowledge can also significantly improve your chances of finishing in the best possible place in the results!
 
 Time trials are called the 'race of truth' for good reason. There's no hiding in the bunch before the sprint, you have to work for your speed every inch of the way, so it
-became extremely  important to keep a reasonable pace, and this guidance aims to help you do so.
-Recently a new model has been developed to find the best racing strategy for each rider, from your trainings and races in the past, it was able to quantificate your ability
-like stamina, recovery, critical power and maximum power the model will show you when to slow down and when to speed up, with a proper pace you will be able to ride
+became extremely important to keep a reasonable pace, and this guide aims to help you do so.
+Recently a new model has been developed to find the best racing strategy for each rider, from your training and races in the past, it was able to quantificate your ability
+like stamina, recovery, critical power, and maximum power the model will show you when to slow down and when to speed up, with a proper pace you will be able to ride
 fast and easy.
 
 So here are the general suggestion of the model:
 \begin{enumerate}
-    \item Always keeps a steady pace, in the simulations made by the model before with your data, the curve is always periodical, which means it has a certain pattern. Such 
-    pattern is what we call a pace, in the past, we often have trouble finding a proper pace for the riders, now with the help of the new model, we are able to find the
-    better pace easier. Yet finding the pace is only a start, in the next few months, you will try your best to ride with the best way that the model shows, the most important part of this training is to find your pace.
-    \item  Pay close attention to your power meter. The instructions of the model is very helpful, yet very cruel, it is possible that it ask you to change your 
+    \item Always keeps a steady pace, in the simulations made by the model before with your data, the curve is always periodical, which means it has a certain pattern. Such a
+    pattern is what we call a pace, in the past, we often have trouble finding a proper pace for the riders, now with the help of the new model, we can find the
+    better pace easier. Yet finding the pace is only a start, in the next few months, you will try your best to ride in the best way that the model shows, the most important part of this training are to find your pace.
+    \item  Pay close attention to your power meter. The instructions of the model are very helpful, yet very cruel, it may ask you to change your 
     power rapidly so that you can be ready for the next attack, and if you failed to follow one instruction, you are very likely to fail the next instruction and if you do so
-    the effectiveness of the model's plan will decline.  So in the next training you should learn how to use you power meter effectively, you should control your power while
-    paying attention to the surrounding environment-- not just to avoid accident, but also to remember when to change your power, it will be though, be it certainly worth it.
-    \item Keep going. In the solution provided by the model the time-distance relationship is nearly liner, which means all those complicated instructions were just a way to help
+    the effectiveness of the model's plan will decline.  So in the next training, you should learn how to use your power meter effectively, you should control your power while
+    paying attention to the surrounding environment-- not just to avoid an accident, but also to remember when to change your power, it will be though, be it certainly worth it.
+    \item Keep going. In the solution provided by the model, the time-distance relationship is nearly linear, which means all those complicated instructions were just a way to help
     you find the way to keep your velocity steadily, so it is unwise to use up all your strength at once, the right way is to find a proper speed and try you best to maintain 
     it.
 \end{enumerate}
@@ -483,11 +489,12 @@ So here are the general suggestion of the model:
     \caption{The constant speed}
 \end{figure}
 A pre-performance routine means your attention stays in the present and only on elements that are task-relevant. It helps reduce anxiety, gets you to your optimal level
-of nerves, and improves concentration, focus and performance.
+of nerves, and improves concentration, focus, and performance.
 
 The routine gets you ready to compete, feeling comfortable you have done everything possible to reach the start line with the best preparation. The more you repeat and
 practice the routine, the more beneficial it is. I hope you have all remembered the instructions above, and it is ok if you didn't, you will remember them in a few routines.
 Now go!
+
 
 
 \bibliographystyle{plain}
